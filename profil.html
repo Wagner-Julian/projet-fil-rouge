@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profil - Club Canin</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body><div id="top"></div>
+<header style="text-align: center; padding: 10px;">
+<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+<a href="index.html#top">
+<img alt="Logo Club Canin" src="images/image logo club canin.png" style="height: 60px;"/>
+</a>
+<h1 style="margin: 0;">Club Canin</h1>
+</div>
+<nav style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+<div class="nav-left" style="display: flex; gap: 10px;">
+<a href="coach.html"><button>Coach</button></a>
+<a href="dashboard.html"><button>Tableau de Bord</button></a>
+<a href="cours.html"><button>Cours</button></a>
+<a href="membres.html"><button>Membres</button></a>
+</div>
+<div class="nav-center" style="display: flex; gap: 10px;">
+<a href="admin.html"><button>👑 Admin</button></a>
+<a href="index.html#top"><button>🏠 Accueil</button></a>
+</div>
+<div class="nav-right" style="display: flex; gap: 10px;">
+<a href="profil.html"><button>Profil</button></a>
+<a href="login.html"><button>Connexion</button></a>
+<a href="register.html"><button>Inscription</button></a>
+</div>
+</nav>
+</header>
+<main>
+<h2>👤 Mon Profil</h2>
+<!-- Carte : Informations personnelles -->
+<div class="card" style="display: flex; gap: 20px; align-items: center;">
+<img alt="Photo de profil" id="profil-photo" src="https://via.placeholder.com/150" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #ccc;"/>
+<div style="flex: 1;">
+<h3>Informations personnelles</h3>
+<p><strong>Nom :</strong> Jean Dupont</p>
+<p><strong>Email :</strong> jean.dupont@example.com</p>
+<p><strong>Nom d'utilisateur :</strong> jdupont</p>
+<label>📸 Modifier la photo :</label><br/>
+<input accept="image/*" onchange="previewImage(event, 'profil-photo')" type="file"/>
+</div>
+</div>
+<!-- Carte : Informations chien -->
+<div class="card" style="display: flex; gap: 20px; align-items: center;">
+<img alt="Photo du chien" id="chien-photo" src="https://via.placeholder.com/150?text=Chien" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px; border: 3px solid #ccc;"/>
+<div style="flex: 1;">
+<h3>🐶 Mon chien</h3>
+<p><strong>Nom :</strong> Max</p>
+<p><strong>Race :</strong> Berger Allemand</p>
+<p><strong>Âge :</strong> 3 ans</p>
+<label>📸 Modifier la photo :</label><br/>
+<input accept="image/*" onchange="previewImage(event, 'chien-photo')" type="file"/>
+</div>
+</div>
+<!-- Réservations -->
+<div class="card" style="margin-top: 30px;">
+<h3>📅 Mes réservations</h3>
+<ul>
+<li>École du chiot – 2024-03-15</li>
+<li>Éducation Junior – 2024-03-16</li>
+</ul>
+</div>
+<div style="text-align: center; margin-top: 30px;">
+    <a href="editProfil.html">
+        <button>✏️ Modifier mon profil</button>
+      </a>
+      
+</div>
+</main>
+<footer>
+<p>© 2025 Club Canin. Tous droits réservés.</p>
+</footer>
+</body>
+</html>
