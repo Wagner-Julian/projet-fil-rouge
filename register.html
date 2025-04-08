@@ -1,38 +1,43 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Register - Club Canin</title>
-<link href="style.css" rel="stylesheet"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Club Canin 🐶</title>
+  <link href="style.css" rel="stylesheet"/>
 </head>
-<body><div id="top"></div>
-<header style="text-align: center; padding: 10px;">
-<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-<a href="index.html#top">
-<img alt="Logo Club Canin" src="images/image logo club canin.png" style="height: 60px;"/>
-</a>
-<h1 style="margin: 0;">Club Canin</h1>
-</div>
-<nav style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-<div class="nav-left" style="display: flex; gap: 10px;">
-<a href="coach.html"><button>Coach</button></a>
-<a href="dashboard.html"><button>Tableau de Bord</button></a>
-<a href="cours.html"><button>Cours</button></a>
-<a href="membres.html"><button>Membres</button></a>
-</div>
-<div class="nav-center" style="display: flex; gap: 10px;">
-<a href="admin.html"><button>👑 Admin</button></a>
-<a href="index.html#top"><button>🏠 Accueil</button></a>
-</div>
-<div class="nav-right" style="display: flex; gap: 10px;">
-<a href="profil.html"><button>Profil</button></a>
-<a href="login.html"><button>Connexion</button></a>
-<a href="register.html"><button>Inscription</button></a>
-</div>
-</nav>
-</header>
+<body>
+  <div id="top"></div>
+
+  <header>
+    <div class="header-logo">
+      <a href="index.html#top">
+        <img src="images/image logo club canin.png" alt="Logo Club Canin"/>
+      </a>
+      <h1>Club Canin</h1>
+    </div>
+
+    <nav>
+      <div class="nav-left">
+        <a href="coach.html"><button>Coach</button></a>
+        <a href="dashboard.html"><button>Tableau de Bord</button></a>
+        <a href="cours.html"><button>Cours</button></a>
+        <a href="membres.html"><button>Membres</button></a>
+      </div>
+
+      <div class="nav-center">
+        <a href="admin.html"><button>👑 Admin</button></a>
+        <a href="index.html#top"><button>🏠 Accueil</button></a>
+      </div>
+
+      <div class="nav-right">
+        <a href="profil.html"><button>Profil</button></a>
+        <a href="login.html"><button>Connexion</button></a>
+        <a href="register.html"><button>Inscription</button></a>
+      </div>
+    </nav>
+  </header>
+
 <main>
 <h2>Inscription 📝</h2>
 <form id="register-form">
@@ -42,7 +47,7 @@
 <input placeholder="Mot de passe" required="" type="password"/><br/><br/>
 <input placeholder="Nom du chien" required="" type="text"/><br/><br/>
 <input placeholder="Race" required="" type="text"/><br/><br/>
-<input placeholder="Âge du chien (mois)" required="" type="number"/><br/><br/>
+<input placeholder="Date de naissance du chien (jj/mm/aaaa)" required="" type="text"/><br/><br/>
 <button type="submit">S'inscrire</button>
 </form>
 </main>

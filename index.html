@@ -1,82 +1,90 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Club Canin 🐶</title>
-<link href="style.css" rel="stylesheet"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Club Canin 🐶</title>
+  <link href="style.css" rel="stylesheet"/>
 </head>
-<body><div id="top"></div>
-<header style="text-align: center; padding: 10px;">
-<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-<a href="index.html#top">
-<img alt="Logo Club Canin" src="images/image logo club canin.png" style="height: 60px;"/>
-</a>
-<h1 style="margin: 0;">Club Canin</h1>
-</div>
-<nav style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-<div class="nav-left" style="display: flex; gap: 10px;">
-<a href="coach.html"><button>Coach</button></a>
-<a href="dashboard.html"><button>Tableau de Bord</button></a>
-<a href="cours.html"><button>Cours</button></a>
-<a href="membres.html"><button>Membres</button></a>
-</div>
-<div class="nav-center" style="display: flex; gap: 10px;">
-<a href="admin.html"><button>👑 Admin</button></a>
-<a href="index.html#top"><button>🏠 Accueil</button></a>
-</div>
-<div class="nav-right" style="display: flex; gap: 10px;">
-<a href="profil.html"><button>Profil</button></a>
-<a href="login.html"><button>Connexion</button></a>
-<a href="register.html"><button>Inscription</button></a>
-</div>
-</nav>
-</header>
-<main>
-<section class="card" style="text-align: center; padding: 30px;">
-<h1>🐾 Bienvenue au Club Canin</h1>
-<p style="max-width: 700px; margin: auto;">
-                Club Canin est une plateforme dédiée à l’éducation canine. Gérez votre profil, ajoutez vos chiens, 
-                réservez vos séances et suivez vos progrès, le tout en ligne 🐶💻.
-            </p>
-<div style="margin: 30px auto;">
-<img alt="Présentation du club" src="images/xx-groupes-de-chiens-semblant-poser-pour-une-photo-de-classe-91d11cb30.jpg" style="max-width: 100%; border-radius: 12px; box-shadow: 0 0 10px #ccc;"/>
-</div>
-<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin: 40px 0;">
-<div style="max-width: 250px;">
-<img alt="Gérer ses chiens" src="images/xx-groupes-de-chiens-semblant-poser-pour-une-photo-de-classe-6bf2f6ee2.jpg" style="width: 100%; border-radius: 10px;"/>
-<h3>Gérez vos chiens</h3>
-<p>Ajoutez, modifiez et suivez les infos de vos compagnons à quatre pattes.</p>
-</div>
-<div style="max-width: 250px;">
-<img alt="Cours d'éducation" src="images/Decembre_2020_-_nv_frequence_sport_chien.jpg" style="width: 100%; border-radius: 10px;"/>
-<h3>Réservez vos cours</h3>
-<p>Choisissez les séances adaptées selon l'âge de votre chien, en quelques clics.</p>
-</div>
-<div style="max-width: 250px;">
-<img alt="Suivi d'évolution" src="images/depositphotos_292995442-stock-ph.webp" style="width: 100%; border-radius: 10px;"/>
-<h3>Suivi personnalisé</h3>
-<p>Accédez à votre tableau de bord et à vos réservations à tout moment.</p>
-</div>
-</div>
-<div style="margin: 20px;">
-<a href="register.html"><button>📝 Rejoindre le Club</button></a>
-</div>
-</section>
+<body>
+  <div id="top"></div>
 
-<div class="videoChien">
-    <video autoplay muted loop playsinline>
-      <source src="video/20250323_1148_Rainy Cityscape Bliss_storyboard_01jq19w52nfvfvkaap1a78x5nn.mp4" type="video/mp4">
-      Votre navigateur ne supporte pas la lecture vidéo.
-    </video>
-  </div>
-  
+  <header>
+    <div class="header-logo">
+      <a href="index.html#top">
+        <img src="images/image logo club canin.png" alt="Logo Club Canin"/>
+      </a>
+      <h1>Club Canin</h1>
+    </div>
 
+    <nav>
+      <div class="nav-left">
+        <a href="coach.html"><button>Coach</button></a>
+        <a href="dashboard.html"><button>Tableau de Bord</button></a>
+        <a href="cours.html"><button>Cours</button></a>
+        <a href="membres.html"><button>Membres</button></a>
+      </div>
 
-</main>
-<footer>
-<p>© 2025 Club Canin. Tous droits réservés.</p>
-</footer>
+      <div class="nav-center">
+        <a href="admin.html"><button>👑 Admin</button></a>
+        <a href="index.html#top"><button>🏠 Accueil</button></a>
+      </div>
+
+      <div class="nav-right">
+        <a href="profil.html"><button>Profil</button></a>
+        <a href="login.html"><button>Connexion</button></a>
+        <a href="register.html"><button>Inscription</button></a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card accueil">
+      <h1>🐾 Bienvenue au Club Canin</h1>
+      <p>
+        Club Canin est une plateforme dédiée à l’éducation canine. Gérez votre profil, ajoutez vos chiens, 
+        réservez vos séances et suivez vos progrès, le tout en ligne 🐶💻.
+      </p>
+
+      <div class="hero-img">
+        <img src="images/xx-groupes-de-chiens-semblant-poser-pour-une-photo-de-classe-91d11cb30.jpg" alt="Présentation du club"/>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <img src="images/xx-groupes-de-chiens-semblant-poser-pour-une-photo-de-classe-6bf2f6ee2.jpg" alt="Gérer ses chiens"/>
+          <h3>Gérez vos chiens</h3>
+          <p>Ajoutez, modifiez et suivez les infos de vos compagnons à quatre pattes.</p>
+        </div>
+
+        <div class="feature">
+          <img src="images/Decembre_2020_-_nv_frequence_sport_chien.jpg" alt="Cours d'éducation"/>
+          <h3>Réservez vos cours</h3>
+          <p>Choisissez les séances adaptées selon l'âge de votre chien, en quelques clics.</p>
+        </div>
+
+        <div class="feature">
+          <img src="images/depositphotos_292995442-stock-ph.webp" alt="Suivi d'évolution"/>
+          <h3>Suivi personnalisé</h3>
+          <p>Accédez à votre tableau de bord et à vos réservations à tout moment.</p>
+        </div>
+      </div>
+
+      <div class="join-button">
+        <a href="register.html"><button>📝 Rejoindre le Club</button></a>
+      </div>
+    </section>
+
+    <div class="videoChien">
+      <video autoplay muted loop playsinline>
+        <source src="video/20250323_1148_Rainy Cityscape Bliss_storyboard_01jq19w52nfvfvkaap1a78x5nn.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture vidéo.
+      </video>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Club Canin. Tous droits réservés.</p>
+  </footer>
 </body>
 </html>

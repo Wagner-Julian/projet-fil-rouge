@@ -206,3 +206,182 @@ footer {
 .nav-center button:hover {
     background-color: #888;
 }
+
+.header-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .header-logo img {
+    height: 60px;
+  }
+  
+  .accueil {
+    text-align: center;
+    padding: 30px;
+  }
+  
+  .accueil p {
+    max-width: 700px;
+    margin: auto;
+  }
+  
+  .hero-img {
+    margin: 30px auto;
+  }
+  
+  .hero-img img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #ccc;
+  }
+  
+  .features {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 40px 0;
+  }
+  
+  .feature {
+    max-width: 250px;
+  }
+  
+  .feature img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .join-button {
+    margin: 20px;
+  }
+
+  .profil-card {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .profil-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+  }
+  
+  .chien-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #ccc;
+  }
+  
+  .profil-info {
+    flex: 1;
+  }
+  
+  .profil-btn {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  @media (max-width: 600px) {
+    .profil-card {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .profil-info {
+      width: 100%;
+    }
+  }
+  
+  .cours-dispo {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+  }
+  
+  .section-title {
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .form-ajout-cours {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  .form-ajout-cours input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .form-ajout-cours button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .form-ajout-cours button:hover {
+    background-color: #218838;
+  }
+  
+  .table-utilisateurs {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  .table-utilisateurs th,
+  .table-utilisateurs td {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .table-utilisateurs th {
+    background-color: #f1f1f1;
+  }
+  
+  .table-utilisateurs select,
+  .table-utilisateurs button {
+    margin-top: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .table-utilisateurs button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .table-utilisateurs button:hover {
+    background-color: #0056b3;
+  }
+  
+  .elipse {
+    word-break: break-all;
+  }
