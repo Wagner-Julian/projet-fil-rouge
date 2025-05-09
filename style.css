@@ -385,3 +385,37 @@ footer {
   .elipse {
     word-break: break-all;
   }
+
+  .back-to-top {
+    position: fixed;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+    background-color: #6c757d;
+    ;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .back-to-top.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .back-to-top:hover {
+    background-color: #444;
+    transform: translateX(-50%) scale(1.1);
+  }
+  
+  

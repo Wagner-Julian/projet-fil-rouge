@@ -66,3 +66,20 @@ function ajouterChien(e) {
 
     alert("Chien ajouté !");
 }
+
+
+  const backToTop = document.querySelector('.back-to-top');
+  const header = document.querySelector('header');
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    },
+    { threshold: 0 }
+  );
+
+  observer.observe(header);
