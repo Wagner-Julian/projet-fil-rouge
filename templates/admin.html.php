@@ -1,62 +1,36 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Club Canin 🐶</title>
-  <link href="style.css" rel="stylesheet"/>
+  <link href="css/style.css" rel="stylesheet" />
 </head>
+
 <body>
   <div id="top"></div>
-
-  <header>
-    <div class="header-logo">
-      <a href="index.html#top">
-        <img src="images/image logo club canin.png" alt="Logo Club Canin"/>
-      </a>
-      <h1>Club Canin</h1>
-    </div>
-
-    <nav>
-      <div class="nav-left">
-        <a href="coach.html"><button>Coach</button></a>
-        <a href="dashboard.html"><button>Tableau de Bord</button></a>
-        <a href="cours.html"><button>Cours</button></a>
-        <a href="membres.html"><button>Membres</button></a>
-      </div>
-
-      <div class="nav-center">
-        <a href="admin.html"><button>👑 Admin</button></a>
-        <a href="index.html#top"><button>🏠 Accueil</button></a>
-      </div>
-
-      <div class="nav-right">
-        <a href="profil.html"><button>Profil</button></a>
-        <a href="login.html"><button>Connexion</button></a>
-        <a href="register.html"><button>Inscription</button></a>
-      </div>
-    </nav>
-  </header>
+  <?php require_once __DIR__ . '/_header.html.php'; ?>
   <main>
     <h2 class="section-title">🛠️ Administration du site</h2>
-  
+
     <!-- Formulaire pour ajouter un cours -->
     <form class="form-ajout-cours">
       <h3>➕ Ajouter un cours</h3>
       <input type="text" name="name" placeholder="Nom du cours" required><br><br>
       <input type="text" name="age" placeholder="Tranche d'âge (ex : 6-12 mois)" required><br><br>
       <input type="date" name="date" required><br><br>
-    <label for="time">Heure du cours :</label><br/>
-    <input id="time" name="time" type="time" required /><br/><br/>
+      <label for="time">Heure du cours :</label><br />
+      <input id="time" name="time" type="time" required /><br /><br />
       <input type="number" name="places" placeholder="Nombre de places" required><br><br>
       <button type="submit">Ajouter</button>
     </form>
-  
+
     <hr>
-  
+
     <!-- Liste des cours existants -->
     <h3>📚 Cours existants</h3>
-  
+
     <div class="card">
       <h4>École du chiot</h4>
       <p><strong>Âge :</strong> 0-5 mois</p>
@@ -65,8 +39,8 @@
       <p><strong>Places :</strong> 2</p>
       <button>🔁 Réinitialiser les places</button>
       <button>❌ Supprimer</button>
-      </div>
-      <div class="card">
+    </div>
+    <div class="card">
       <h4>Éducation Junior</h4>
       <p><strong>Âge :</strong> 6-12 mois</p>
       <p><strong>Date :</strong> 2024-03-16</p>
@@ -74,8 +48,8 @@
       <p><strong>Places :</strong> 1</p>
       <button>🔁 Réinitialiser les places</button>
       <button>❌ Supprimer</button>
-      </div>
-      <div class="card">
+    </div>
+    <div class="card">
       <h4>Dressage adulte</h4>
       <p><strong>Âge :</strong> 1+ ans</p>
       <p><strong>Date :</strong> 2024-03-18</p>
@@ -83,13 +57,13 @@
       <p><strong>Places :</strong> 5</p>
       <button>🔁 Réinitialiser les places</button>
       <button>❌ Supprimer</button>
-      </div>
-  
+    </div>
+
     <hr>
-  
+
     <!-- Gestion des droits des utilisateurs -->
     <h3>👥 Gestion des utilisateurs</h3>
-  
+
     <table class="table-utilisateurs">
       <thead>
         <tr>
@@ -117,7 +91,7 @@
         </tr>
         <tr>
           <td>Sophie Martin</td>
-          <td class= "elipse" >sophie.martin@example.com</td>
+          <td class="elipse">sophie.martin@example.com</td>
           <td>smartin</td>
           <td>Coach</td>
           <td>
@@ -136,9 +110,5 @@
 <a href="#top" class="back-to-top" aria-label="Retour en haut">
   ↟
 </a>
-<script src="scripts.js" defer></script>
-  <footer>
-    <p>© 2025 Club Canin. Tous droits réservés.</p>
-  </footer>
-  
-</html>
+
+<?php require_once __DIR__ . '/_footer.html.php'; ?>
