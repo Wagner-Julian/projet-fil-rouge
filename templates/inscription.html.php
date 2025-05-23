@@ -27,6 +27,6 @@
   <button type="submit">S'inscrire</button>
 </form>
 
-  <?php var_dump($_POST); ?>
+
   </main>
   <?php require_once __DIR__ . '/_footer.html.php'; ?>

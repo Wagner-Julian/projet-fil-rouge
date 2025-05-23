@@ -3,7 +3,7 @@ session_start();
 
 require_once __DIR__ . '/../include/connection-base-donnees.php';
 
-var_dump($_POST);
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'] ??null;
@@ -40,27 +40,59 @@ $stmt->bindParam(':nom_utilisateur', $nomUtilisateur);
 $stmt->bindParam(':mot_de_passe', $motDePasse);
 $stmt->bindParam(':id_role', $idRole);
 $idRole = 3; 
-$stmt->execute();
+try {
+    $stmt->execute();
+} catch (PDOException $e) {
+    if (str_contains($e->getMessage(), 'unique_email')) {
+        die("❌ Cette adresse e-mail est déjà utilisée.");
+    } else {
+        die("❌ Erreur inconnue : " . $e->getMessage());
+    }
+}
+
 $idUtilisateur = $pdo->lastInsertId();
 
-$sqlChien= "INSERT INTO chien (nom_chien,date_inscription,date_naissance_chien,id_utilisateur) VALUES (:nom_chien,:date_inscription,:date_naissance_chien, :id_utilisateur)";
+
+
+$sqlCompare= "SELECT id_race from race WHERE nom_race = :nom_race";
+$stmtCompare = $pdo->prepare($sqlCompare);
+$stmtCompare->bindParam(':nom_race', $race);
+$stmtCompare->execute();
+$recherche = $stmtCompare->fetch(PDO::FETCH_ASSOC);
+if ($recherche) {
+    // ✅ Race trouvée → on utilise son ID
+    $idRace = $recherche['id_race'];
+} else {
+    // Sinon on insère la nouvelle race
+    $origine = "Inconnue";
+    $descriptif = "Aucune description.";
+
+    $sqlInsertRace = "INSERT INTO race (nom_race, origine, descriptif)
+                      VALUES (:nom_race, :origine, :descriptif)";
+    $stmtInsert = $pdo->prepare($sqlInsertRace);
+    $stmtInsert->bindParam(':nom_race', $race);
+    $stmtInsert->bindParam(':origine', $origine);
+    $stmtInsert->bindParam(':descriptif', $descriptif);
+    $stmtInsert->execute();
+
+    $idRace = $pdo->lastInsertId();
+}
+
+
+
+$sqlChien= "INSERT INTO chien (nom_chien,date_inscription,date_naissance_chien,id_utilisateur, id_race) VALUES (:nom_chien,:date_inscription,:date_naissance_chien, :id_utilisateur, :id_race)";
 $stmtChien = $pdo->prepare($sqlChien);
 $stmtChien->bindParam(':nom_chien', $nomChien);
 $stmtChien->bindParam(':date_naissance_chien', $dateNaissance);
 $stmtChien->bindParam('date_inscription', $dateInscription);
 $stmtChien->bindParam(':id_utilisateur', $idUtilisateur);
-$stmt->bindParam(':id_race', $idRace);
+$stmtChien->bindParam(':id_race', $idRace);
 $stmtChien->execute();
 
-$sqlRace = "INSERT INTO race (nom_race, origine,descriptif) VALUES (:nom_race, :origine, :descriptif)";
-$stmtRace = $pdo->prepare($sqlRace);
-$stmtRace->bindParam(':nom_race', $race);
-$stmtRace->bindParam(':origine', $origine);
-$stmtRace->bindParam(':descriptif', $descriptif);
-$stmtRace->execute();
 
-echo "d)azdka";
 }
+
+
 
 
 require_once __DIR__ . '/../templates/inscription.html.php';
