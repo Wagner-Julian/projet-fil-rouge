@@ -42,7 +42,11 @@
       </div>
 
       <div class="join-button">
-        <a href="inscription.php"><button>📝 Rejoindre le Club</button></a>
+      <?php if (isset($_SESSION['id_utilisateur'])): ?>
+      <a href="cours.php"><button>📘 Voir nos nouveaux cours </button></a>
+      <?php else: ?>
+        <a href="inscription.php"><button>📝 Rejoindre le Club </button></a>
+      <?php endif; ?>
       </div>
     </section>
 

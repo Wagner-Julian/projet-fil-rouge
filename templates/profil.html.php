@@ -59,7 +59,7 @@
     </div>
 
     <div class="profil-btn">
-      <a href="editProfil.php">
+      <a href="modifieProfil.php">
         <button>✏️ Modifier mon profil</button>
       </a>
     </div>

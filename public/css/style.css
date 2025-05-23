@@ -60,6 +60,7 @@ main {
     max-width: 1000px;
     margin: auto;
     padding: 20px;
+    min-height: 360px;
 }
 
 /* Cartes (cards) pour affichage des informations */
@@ -140,7 +141,8 @@ footer {
     text-align: center;
     padding: 15px 0;
     width: 100%;
-    margin-top: 20px; /* Ajout d'un espace entre le contenu et le footer */
+    margin-bottom: 20px; /* Ajout d'un espace entre le contenu et le footer */
+
 }
 
 

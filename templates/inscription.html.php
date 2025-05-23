@@ -15,15 +15,18 @@
 
   <main>
     <h2>Inscription 📝</h2>
-    <form id="register-form">
-      <input placeholder="Nom " required="" type="text" /><br /><br />
-      <input placeholder="Email" required="" type="email" /><br /><br />
-      <input placeholder="Nom utilisateur" required="" type="text" /><br /><br />
-      <input placeholder="Mot de passe" required="" type="password" /><br /><br />
-      <input placeholder="Nom du chien" required="" type="text" /><br /><br />
-      <input placeholder="Race" required="" type="text" /><br /><br />
-      <input placeholder="Date de naissance du chien (jj/mm/aaaa)" required="" type="text" /><br /><br />
-      <button type="submit">S'inscrire</button>
-    </form>
+    
+<form action="inscription.php" method="POST" id="inscription-form">
+  <input name="nom" placeholder="Nom" required type="text" /><br /><br />
+  <input name="email" placeholder="Email" required type="email" /><br /><br />
+  <input name="nom_utilisateur" placeholder="Nom utilisateur" required type="text" /><br /><br />
+  <input name="mot_de_passe" placeholder="Mot de passe" required type="password" /><br /><br />
+  <input name="nom_chien" placeholder="Nom du chien" required type="text" /><br /><br />
+  <input name="race" placeholder="Race" required type="text" /><br /><br />
+  <input name="date_naissance" placeholder="Date de naissance du chien (jj/mm/aaaa)" required type="text" /><br /><br />
+  <button type="submit">S'inscrire</button>
+</form>
+
+  <?php var_dump($_POST); ?>
   </main>
   <?php require_once __DIR__ . '/_footer.html.php'; ?>

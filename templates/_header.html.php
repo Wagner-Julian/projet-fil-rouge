@@ -1,7 +1,7 @@
   <header>
 
     <div class="header-logo">
-      <a href="index.html.php#top">
+      <a href="index.php#top">
         <img src="ressources/images/image logo club canin.png" alt="Logo Club Canin" />
       </a>
 
