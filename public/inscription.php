@@ -1,101 +1,102 @@
 <?php
 session_start();
-
 require_once __DIR__ . '/../include/connection-base-donnees.php';
-
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'] ?? null;
     $email = $_POST['email'] ?? null;
-    $dateInscription = date('Y-m-d') ?? null;
+    $dateInscription = date('Y-m-d');
     $nomUtilisateur = $_POST['nom_utilisateur'] ?? null;
     $motDePasse = password_hash($_POST['mot_de_passe'] ?? "", PASSWORD_BCRYPT);
     $nomChien = $_POST['nom_chien'] ?? null;
     $race = $_POST['race'] ?? null;
-    $dateNaissanceInput = $_POST['date_naissance'];  // valeur texte 'dd/mm/yyyy'
+    $dateNaissanceInput = $_POST['date_naissance'] ?? null; // format 'dd/mm/yyyy'
 
-    $dateNaissance = null;
-    $dateActuelle = new DateTime();
-    if (isset($dateNaissanceInput)) {
+    // 🔒 Vérification de la date
+    if ($dateNaissanceInput) {
         $dateObj = DateTime::createFromFormat('d/m/Y', $dateNaissanceInput);
-        if ($dateObj) {
-            $dateNaissance = $dateObj->format('Y-m-d');
-        } elseif {
-            ($dateNaissance > $today) {
-    die("La date de naissance ne peut pas être dans le futur.");
-        
+
+        if (!$dateObj || $dateObj->format('d/m/Y') !== $dateNaissanceInput) {
+            die("Format de date invalide. Format attendu : jj/mm/aaaa.");
+        }
+
+        $dateActuelle = new DateTime();
+        if ($dateObj > $dateActuelle) {
+            die("La date de naissance ne peut pas être dans le futur.");
+        }
+
+        $dateNaissance = $dateObj->format('Y-m-d');
     } else {
         die("Date de naissance du chien manquante.");
     }
 
+    // 🔍 Vérifier si l’email ou le nom d'utilisateur existe déjà
     $sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email OR nom_utilisateur = :nom_utilisateur";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        ':email' => $_POST['email'],
-        ':nom_utilisateur' => $_POST['nom_utilisateur']
+        ':email' => $email,
+        ':nom_utilisateur' => $nomUtilisateur
     ]);
-    $existe = $stmt->fetchColumn();
 
-    if ($existe > 0) {
+    if ($stmt->fetchColumn() > 0) {
         die("L'email ou le nom d'utilisateur est déjà utilisé.");
     }
 
-    
-
+    // ✅ Insertion de l'utilisateur
     $sql = "INSERT INTO utilisateur (nom, email, date_inscription, nom_utilisateur, mot_de_passe, id_role)
-        VALUES (:nom, :email, :date_inscription, :nom_utilisateur, :mot_de_passe, :id_role)";
+            VALUES (:nom, :email, :date_inscription, :nom_utilisateur, :mot_de_passe, :id_role)";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':nom', $nom);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':date_inscription', $dateInscription);
-    $stmt->bindParam(':nom_utilisateur', $nomUtilisateur);
-    $stmt->bindParam(':mot_de_passe', $motDePasse);
-    $stmt->bindParam(':id_role', $idRole);
-    $idRole = 3;
-    $stmt->execute();
+    $idRole = 3; // rôle par défaut
+    $stmt->execute([
+        ':nom' => $nom,
+        ':email' => $email,
+        ':date_inscription' => $dateInscription,
+        ':nom_utilisateur' => $nomUtilisateur,
+        ':mot_de_passe' => $motDePasse,
+        ':id_role' => $idRole
+    ]);
 
     $idUtilisateur = $pdo->lastInsertId();
 
-
-
-    $sqlCompare = "SELECT id_race from race WHERE nom_race = :nom_race";
+    // 🔍 Vérifier ou insérer la race
+    $sqlCompare = "SELECT id_race FROM race WHERE nom_race = :nom_race";
     $stmtCompare = $pdo->prepare($sqlCompare);
-    $stmtCompare->bindParam(':nom_race', $race);
-    $stmtCompare->execute();
+    $stmtCompare->execute([':nom_race' => $race]);
     $recherche = $stmtCompare->fetch(PDO::FETCH_ASSOC);
+
     if ($recherche) {
-        // ✅ Race trouvée → on utilise son ID
         $idRace = $recherche['id_race'];
     } else {
-        // Sinon on insère la nouvelle race
         $origine = "Inconnue";
         $descriptif = "Aucune description.";
 
-        $sqlInsertRace = "INSERT INTO race (nom_race, origine, descriptif) VALUES (:nom_race, :origine, :descriptif)";
+        $sqlInsertRace = "INSERT INTO race (nom_race, origine, descriptif)
+                    VALUES (:nom_race, :origine, :descriptif)";
         $stmtInsert = $pdo->prepare($sqlInsertRace);
-        $stmtInsert->bindParam(':nom_race', $race);
-        $stmtInsert->bindParam(':origine', $origine);
-        $stmtInsert->bindParam(':descriptif', $descriptif);
-        $stmtInsert->execute();
+        $stmtInsert->execute([
+            ':nom_race' => $race,
+            ':origine' => $origine,
+            ':descriptif' => $descriptif
+        ]);
 
         $idRace = $pdo->lastInsertId();
     }
 
-
-
-    $sqlChien = "INSERT INTO chien (nom_chien,date_inscription,date_naissance_chien,id_utilisateur, id_race) VALUES (:nom_chien,:date_inscription,:date_naissance_chien, :id_utilisateur, :id_race)";
+    // ✅ Insertion du chien
+    $sqlChien = "INSERT INTO chien (nom_chien, date_inscription, date_naissance_chien, id_utilisateur, id_race)
+                VALUES (:nom_chien, :date_inscription, :date_naissance_chien, :id_utilisateur, :id_race)";
     $stmtChien = $pdo->prepare($sqlChien);
-    $stmtChien->bindParam(':nom_chien', $nomChien);
-    $stmtChien->bindParam(':date_naissance_chien', $dateNaissance);
-    $stmtChien->bindParam('date_inscription', $dateInscription);
-    $stmtChien->bindParam(':id_utilisateur', $idUtilisateur);
-    $stmtChien->bindParam(':id_race', $idRace);
-    $stmtChien->execute();
+    $stmtChien->execute([
+        ':nom_chien' => $nomChien,
+        ':date_inscription' => $dateInscription,
+        ':date_naissance_chien' => $dateNaissance,
+        ':id_utilisateur' => $idUtilisateur,
+        ':id_race' => $idRace
+    ]);
+
+    // ✅ Redirection ou confirmation
+    echo "Inscription réussie !";
+    // header("Location: profil.php"); // décommente si tu veux rediriger après inscription
 }
-    
-
-
 
 require_once __DIR__ . '/../templates/inscription.html.php';
