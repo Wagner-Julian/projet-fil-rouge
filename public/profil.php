@@ -23,6 +23,9 @@ if ($utilisateur) {
 
 require_once __DIR__ . '/../templates/profil.html.php';
 
-
-
-        
+function ageChien($dateNaissanceChien) {
+    $dateNaissance = new DateTime($dateNaissanceChien);
+    $aujourdhui = new DateTime();
+    $age = $aujourdhui->diff($dateNaissance);
+    return $age->y . ' ans';
+}
