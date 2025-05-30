@@ -95,6 +95,12 @@ main {
     cursor: not-allowed;
 }
 
+.erreur-messages {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 /* Styles des formulaires */
 form {
     background-color: #fff;

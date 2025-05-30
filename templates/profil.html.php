@@ -23,14 +23,18 @@
         alt="Photo de profil"
         class="profil-photo" />
       <div class="profil-info">
+
+
         <h3>Informations personnelles</h3>
-        <p><strong>Nom :</strong> Jean Dupont</p>
-        <p><strong>Email :</strong> jean.dupont@example.com</p>
-        <p><strong>Nom d'utilisateur :</strong> jdupont</p>
+        <p><strong>Nom :</strong> <?= $nom ?></p>
+        <p><strong>Email :</strong> <?= $email ?></p>
+        <p><strong>Nom d'utilisateur :</strong><?= $nomUtilisateur ?> </p>
         <label>📸 Modifier la photo :</label><br />
         <input type="file" accept="image/*" onchange="previewImage(event, 'profil-photo')" />
+  
       </div>
     </div>
+
 
     <!-- Carte : Informations chien -->
     <div class="card profil-card">
@@ -41,9 +45,9 @@
         class="chien-photo" />
       <div class="profil-info">
         <h3>🐶 Mon chien</h3>
-        <p><strong>Nom :</strong> Max</p>
-        <p><strong>Race :</strong> Berger Allemand</p>
-        <p><strong>Âge :</strong> 3 ans</p>
+      <p><strong>Nom :</strong><?= $nomChien?> </p>
+        <p><strong>Race :</strong> <?= $raceChien ?> </p>
+        <p><strong>Âge :</strong><?= $dateNaissanceChien ?> </p>
         <label>📸 Modifier la photo :</label><br />
         <input type="file" accept="image/*" onchange="previewImage(event, 'chien-photo')" />
       </div>

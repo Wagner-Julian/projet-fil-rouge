@@ -1,60 +1,4 @@
-// Données globales simulées
-const state = {
-  courses: [
-    {
-      id: 1,
-      name: "École du chiot",
-      age: "0-5 mois",
-      date: "2024-03-15",
-      places: 2,
-    },
-    {
-      id: 2,
-      name: "Éducation Junior",
-      age: "6-12 mois",
-      date: "2024-03-16",
-      places: 1,
-    },
-    {
-      id: 3,
-      name: "Dressage adulte",
-      age: "1+ ans",
-      date: "2024-03-18",
-      places: 5,
-    },
-  ],
-  members: [
-    {
-      id: 1,
-      owner: "Jean Dupont",
-      dog: "Max",
-      race: "Berger Allemand",
-      age: "3 ans",
-    },
-    {
-      id: 2,
-      owner: "Sophie Martin",
-      dog: "Bella",
-      race: "Labrador",
-      age: "1 an",
-    },
-  ],
-  user: {
-    id: 1,
-    username: "jdupont",
-    role: "user",
-    nom: "Jean Dupont",
-    email: "jean.dupont@example.com",
-  },
-  chiens: [
-    {
-      nom: "Max",
-      race: "Berger Allemand",
-      age: "3 ans",
-      naissance: "2021-01-20",
-    },
-  ],
-};
+
 
 // Fonction pour réserver un cours
 function reserverCours(courseId) {
@@ -84,23 +28,6 @@ function reserverCours(courseId) {
   }
 }
 
-// Fonction pour ajouter un chien (utilisée dans editProfil.html)
-function ajouterChien(e) {
-  e.preventDefault();
-  const form = e.target;
-  const nom = form.nomChien.value;
-  const race = form.raceChien.value;
-  const age = form.ageChien.value;
-  const naissance = form.naissanceChien.value;
-
-  const li = document.createElement("li");
-  li.textContent = `${nom} – ${race} – ${age} – ${naissance}`;
-
-  document.getElementById("liste-chiens").appendChild(li);
-  form.reset();
-
-  alert("Chien ajouté !");
-}
 
 const backToTop = document.querySelector(".back-to-top");
 const header = document.querySelector("header");
@@ -117,3 +44,38 @@ const observer = new IntersectionObserver(
 );
 
 observer.observe(header);
+
+
+// afficher une alerte quand email est identique au champ saisi email
+
+const emailInput = document.getElementById('emailInput');
+const utilisateurInput = document.getElementById('utilisateurInput');
+
+emailInput.addEventListener('blur', async () => {
+  const reponse = await fetch('verifchamp.php?email=' + encodeURIComponent(emailInput.value));
+  const data = await reponse.json();
+
+  const errorDiv = document.getElementById('emailErreur');
+  errorDiv.textContent = data.existe ? "❌ L'email est déjà utilisé." : "";
+});
+
+utilisateurInput.addEventListener('blur', async () => {
+  const reponse = await fetch('verifchamp.php?nom_utilisateur=' + encodeURIComponent(utilisateurInput.value));
+  const data = await reponse.json();
+
+  const utilisateurDiv = document.getElementById('utilisateurErreur');
+  utilisateurDiv.textContent = data.existe ? "❌ Le nom d'utilisateur est déjà utilisé." : "";
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
