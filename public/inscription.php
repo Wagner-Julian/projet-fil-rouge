@@ -17,17 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dateNaissanceInput = $_POST['date_naissance'];  // valeur texte 'dd/mm/yyyy'
 
     $dateNaissance = null;
+    $dateActuelle = new DateTime();
     if (isset($dateNaissanceInput)) {
         $dateObj = DateTime::createFromFormat('d/m/Y', $dateNaissanceInput);
         if ($dateObj) {
             $dateNaissance = $dateObj->format('Y-m-d');
-        }
+        } elseif {
+            ($dateNaissance > $today) {
+    die("La date de naissance ne peut pas être dans le futur.");
+        
     } else {
         die("Date de naissance du chien manquante.");
     }
 
+    $sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email OR nom_utilisateur = :nom_utilisateur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':email' => $_POST['email'],
+        ':nom_utilisateur' => $_POST['nom_utilisateur']
+    ]);
+    $existe = $stmt->fetchColumn();
 
+    if ($existe > 0) {
+        die("L'email ou le nom d'utilisateur est déjà utilisé.");
+    }
 
+    
 
     $sql = "INSERT INTO utilisateur (nom, email, date_inscription, nom_utilisateur, mot_de_passe, id_role)
         VALUES (:nom, :email, :date_inscription, :nom_utilisateur, :mot_de_passe, :id_role)";
@@ -79,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmtChien->bindParam(':id_race', $idRace);
     $stmtChien->execute();
 }
-
+    
 
 
 

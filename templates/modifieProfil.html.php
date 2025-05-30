@@ -17,14 +17,14 @@
     <div class="card">
       <form>
         <h3>Informations personnelles</h3>
-        <input placeholder="Nom" required="" type="text" value="Jean Dupont" /><br /><br />
-        <input placeholder="Email" required="" type="email" value="jean.dupont@example.com" /><br /><br />
-        <input placeholder="Nom d'utilisateur" required="" type="text" value="jdupont" /><br /><br />
+        <input placeholder="Nom" required="" type="text" value="<?= hsc($nom) ?>"/><br /><br />
+        <input placeholder="Email" required="" type="email" value="<?= hsc($email)?>" /><br /><br />
+        <input placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur)?>" /><br /><br />
         <h3>🐶 Informations du chien</h3>
-        <input placeholder="Nom du chien" required="" type="text" value="Max" /><br /><br />
-        <input placeholder="Race" required="" type="text" value="Berger Allemand" /><br /><br />
-        <input placeholder="Âge" required="" type="text" value="3 ans" /><br /><br />
-        <input required="" type="date" value="2021-01-20" /><br /><br />
+        <input placeholder="Nom du chien" required="" type="text" value="<?= hsc($nomChien)?>" /><br /><br />
+        <input placeholder="Race" required="" type="text" value="<?= $raceChien?>" /><br /><br />
+        <input placeholder="Âge" required="" type="text" value="<?= hsc(ageChien(dateNaissanceChien: $dateNaissanceChien))?>" /><br /><br />
+        <input readonly type="date" value="<?= $dateNaissanceChien?>"  /><br /><br />
         <button type="submit">💾 Enregistrer</button>
       </form>
     </div>

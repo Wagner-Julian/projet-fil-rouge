@@ -2,8 +2,9 @@
 session_start();
 
 require_once __DIR__ . '/../include/connection-base-donnees.php';
+require_once __DIR__ . '/../include/fonction.php';
 
-$sql= "SELECT  u.nom, u.email, u.nom_utilisateur, c.nom_chien, c.date_naissance_chien, r.nom_race FROM utilisateur u JOIN chien c ON u.id_utilisateur = c.id_utilisateur JOIN race r ON c.id_race = r.id_race WHERE u.id_utilisateur = :id_utilisateur";
+$sql = "SELECT  u.nom, u.email, u.nom_utilisateur, c.nom_chien, c.date_naissance_chien, r.nom_race FROM utilisateur u JOIN chien c ON u.id_utilisateur = c.id_utilisateur JOIN race r ON c.id_race = r.id_race WHERE u.id_utilisateur = :id_utilisateur";
 
 // recuperation des données de l'utilisateur
 $stmt = $pdo->prepare($sql);
@@ -21,11 +22,6 @@ if ($utilisateur) {
     $raceChien = $utilisateur['nom_race'];
 }
 
+
 require_once __DIR__ . '/../templates/profil.html.php';
 
-function ageChien($dateNaissanceChien) {
-    $dateNaissance = new DateTime($dateNaissanceChien);
-    $aujourdhui = new DateTime();
-    $age = $aujourdhui->diff($dateNaissance);
-    return $age->y . ' ans';
-}

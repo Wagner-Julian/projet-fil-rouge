@@ -28,7 +28,7 @@
         <h3>Informations personnelles</h3>
         <p><strong>Nom :</strong> <?= $nom ?></p>
         <p><strong>Email :</strong> <?= $email ?></p>
-        <p><strong>Nom d'utilisateur :</strong><?= $nomUtilisateur ?> </p>
+        <p><strong>Nom d'utilisateur :</strong> <?= $nomUtilisateur ?> </p>
         <label>📸 Modifier la photo :</label><br />
         <input type="file" accept="image/*" onchange="previewImage(event, 'profil-photo')" />
   
