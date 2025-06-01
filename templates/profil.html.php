@@ -36,23 +36,6 @@
     </div>
 
 
-    <!-- Carte : Informations chien -->
-    <div class="card profil-card">
-      <img
-        id="chien-photo"
-        src="https://via.placeholder.com/150?text=Chien"
-        alt="Photo du chien"
-        class="chien-photo" />
-      <div class="profil-info">
-        <h3>🐶 Mon chien</h3>
-      <p><strong>Nom :</strong> <?= $nomChien?> </p>
-        <p><strong>Race :</strong> <?= $raceChien ?> </p>
-        <p><strong>Âge :</strong> <?= ageChien($dateNaissanceChien) ?> </p>
-        <label>📸 Modifier la photo :</label><br />
-        <input type="file" accept="image/*" onchange="previewImage(event, 'chien-photo')" />
-      </div>
-    </div>
-
     <!-- Réservations -->
     <div class="card">
       <h3>📅 Mes réservations</h3>

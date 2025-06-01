@@ -1,49 +1,21 @@
-
-
-// Fonction pour réserver un cours
-function reserverCours(courseId) {
-  const course = state.courses.find((c) => c.id === courseId);
-  if (course && course.places > 0) {
-    course.places -= 1;
-
-    const messageDiv = document.createElement("div");
-    messageDiv.textContent = "✅ Cours réservé avec succès !";
-    messageDiv.style.position = "fixed";
-    messageDiv.style.bottom = "20px";
-    messageDiv.style.left = "50%";
-    messageDiv.style.transform = "translateX(-50%)";
-    messageDiv.style.background = "#4caf50";
-    messageDiv.style.color = "white";
-    messageDiv.style.padding = "10px 20px";
-    messageDiv.style.borderRadius = "8px";
-    messageDiv.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
-    messageDiv.style.zIndex = "1000";
-    document.body.appendChild(messageDiv);
-
-    setTimeout(() => {
-      messageDiv.remove();
-    }, 2000);
-  } else {
-    alert("Désolé, il n'y a plus de places disponibles pour ce cours.");
-  }
-}
-
-
 const backToTop = document.querySelector(".back-to-top");
 const header = document.querySelector("header");
 
-const observer = new IntersectionObserver(
-  ([entry]) => {
-    if (!entry.isIntersecting) {
-      backToTop.classList.add("show");
-    } else {
-      backToTop.classList.remove("show");
-    }
-  },
-  { threshold: 0 }
-);
+if (backToTop && header) {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
+    },
+    { threshold: 0 }
+  );
 
-observer.observe(header);
+  observer.observe(header);
+}
+
 
 
 // afficher une alerte quand email est identique au champ saisi email
@@ -65,12 +37,61 @@ utilisateurInput.addEventListener('blur', async () => {
 
   const utilisateurDiv = document.getElementById('utilisateurErreur');
   utilisateurDiv.textContent = data.existe ? "❌ Le nom d'utilisateur est déjà utilisé." : "";
+  
 });
 
 
+  const mdpInput = document.getElementById('mot_de_passe');
+  const confirmationInput = document.getElementById('confirmation_mot_de_passe');
+  const erreurDiv = document.getElementById('erreur-mdp');
+  const form = document.getElementById('inscription-form');
+
+  function verifierCorrespondance() {
+    const mdp = mdpInput.value;
+    const confirmation = confirmationInput.value;
+
+    if (confirmation && mdp !== confirmation) {
+      erreurDiv.textContent = "⚠️ Les mots de passe ne sont pas identiques.";
+      return false;
+    } else if (confirmation && mdp === confirmation) {
+      erreurDiv.textContent = "✅ Les mots de passe correspondent.";
+      erreurDiv.style.color = "green";
+      return true;
+    } else {
+      erreurDiv.textContent = "";
+      return false;
+    }
+  }
+
+  // Vérifie dès que l'utilisateur quitte le champ de confirmation
+  confirmationInput.addEventListener('blur', verifierCorrespondance);
+
+  // Vérifie à la soumission du formulaire
+  form.addEventListener('submit', function (e) {
+    const ok = verifierCorrespondance();
+    if (!ok) {
+      erreurDiv.style.color = "red";
+      erreurDiv.textContent = "❌ Les mots de passe doivent être identiques pour valider.";
+      e.preventDefault();
+    }
+  });
 
 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("formChien");
 
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    const nom = form.elements["nom_chien"].value.trim();
+    const race = form.elements["race"].value.trim();
+    const date = form.elements["date_naissance_chien"].value.trim();
+
+    if (nom && race && date) {
+      alert("🐶 Chien inscrit avec succès !");
+    }
+  });
+});
 
 
 
