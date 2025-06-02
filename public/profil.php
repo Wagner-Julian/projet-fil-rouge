@@ -10,7 +10,7 @@ if (!isset($_SESSION['id_utilisateur'])) {
 }
 
 // Récupération des données utilisateur
-$sql = "SELECT nom, email, nom_utilisateur FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
+$sql = "SELECT nom, prenom, email, nom_utilisateur FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id_utilisateur' => $_SESSION['id_utilisateur']]);
 $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,6 +18,7 @@ $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 // Vérifie si des données ont été trouvées
 if ($utilisateur) {
     $nom = $utilisateur['nom'];
+    $prenom = $utilisateur['prenom'] ?? ''; 
     $email = $utilisateur['email'];
     $nomUtilisateur = $utilisateur['nom_utilisateur'];
 } else {

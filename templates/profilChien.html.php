@@ -29,6 +29,12 @@
             </div>
         </div>
 
+        <div class="profil-btn">
+            <a href="modifieProfilChien.php">
+                <button>✏️ Modifier profil Chien</button>
+            </a>
+        </div>
+
 
     </main>
     <a href="#top" class="back-to-top" aria-label="Retour en haut">

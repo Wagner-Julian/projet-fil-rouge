@@ -101,6 +101,40 @@ main {
     margin-top: 10px;
 }
 
+
+
+  .card-chien {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-chien-info {
+  flex: 1;
+}
+.card-chien-info h4 {
+  margin: 0 0 8px 0;
+}
+.card-chien-info p {
+    margin: 4px 0;
+}
+.card-chien-actions {
+    margin-left: 16px;
+}
+.card-chien-actions a {
+  text-decoration: none;
+  background: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+
 /* Styles des formulaires */
 form {
     background-color: #fff;
