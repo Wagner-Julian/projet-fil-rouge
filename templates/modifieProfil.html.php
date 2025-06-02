@@ -18,6 +18,7 @@
       <form>
         <h3>Informations personnelles</h3>
         <input placeholder="Nom" required="" type="text" value="<?= hsc($nom) ?>"/><br /><br />
+        <input placeholder="Prénom" required="" type="text" value="<?= hsc($prenom) ?>" /><br /><br />
         <input placeholder="Email" required="" type="email" value="<?= hsc($email)?>" /><br /><br />
         <input placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur)?>" /><br /><br />
         <button type="submit">💾 Enregistrer</button>

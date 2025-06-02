@@ -52,7 +52,7 @@
             <p>Vous n’avez aucun chien enregistré.</p>
         <?php endif; ?>
 
-        <!-- FORMULAIRE DE MODIFICATION PRÉREMPLI (s’il y a un $idChien) -->
+
         <div class="card">
             <h2><?= $idChien ? 'Modifier le chien' : '➕ Ajouter un autre chien' ?></h2>
             <form method="post" action="modifieProfilChien.php">
@@ -88,7 +88,7 @@
 
         <hr />
 
-        <!-- CARDS POUR TOUS LES CHIENS DE L'UTILISATEUR -->
+
 
     </main>
 
