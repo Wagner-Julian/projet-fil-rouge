@@ -26,14 +26,14 @@ $stmt = $pdo->prepare("
     JOIN race r ON c.id_race = r.id_race
     WHERE c.id_utilisateur = :id
     ORDER BY c.id_chien DESC
-    LIMIT 1
 ");
+
 $stmt->execute(['id' => $idUtilisateur]);
-$chien = $stmt->fetch(PDO::FETCH_ASSOC);
+$chiens = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Définit les variables, même si on n'a pas posté
 $nomChien = $chien['nom_chien'] ?? null;
-$race = $chien['nom_race'] ?? null;
+$raceChien = $chien['nom_race'] ?? null;
 $dateNaissanceChien = $chien['date_naissance_chien'] ?? null;
 
 

@@ -20,10 +20,10 @@ $idChien       = '';
 // 2. Récupérer tous les chiens (pour afficher les cards)
 $sqlAllChiens = "
     SELECT
-      c.id_chien,
-      c.nom_chien,
-      c.date_naissance_chien,
-      r.nom_race
+    c.id_chien,
+    c.nom_chien,
+    c.date_naissance_chien,
+    r.nom_race
     FROM chien c
     JOIN race r ON c.id_race = r.id_race
     WHERE c.id_utilisateur = :id_utilisateur
@@ -42,7 +42,7 @@ if (isset($_GET['id_chien'])) {
         FROM chien c
         JOIN race r ON c.id_race = r.id_race
         WHERE c.id_chien = :id_chien
-          AND c.id_utilisateur = :id_utilisateur
+        AND c.id_utilisateur = :id_utilisateur
     ";
     $stmt = $pdo->prepare($sqlChien);
     $stmt->execute([
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 date_naissance_chien = :date_naissance_chien,
                 id_race = :id_race
             WHERE id_chien = :id_chien
-              AND id_utilisateur = :id_utilisateur
+            AND id_utilisateur = :id_utilisateur
         ");
         $stmtUpdate->execute([
             ':nom_chien'            => $nomChienPost,
@@ -114,9 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $stmtInsert = $pdo->prepare("
             INSERT INTO chien
-              (nom_chien, date_inscription, date_naissance_chien, id_utilisateur, id_race)
+            (nom_chien, date_inscription, date_naissance_chien, id_utilisateur, id_race)
             VALUES
-              (:nom_chien, :date_inscription, :date_naissance_chien, :id_utilisateur, :id_race)
+            (:nom_chien, :date_inscription, :date_naissance_chien, :id_utilisateur, :id_race)
         ");
         $stmtInsert->execute([
             ':nom_chien'            => $nomChienPost,
