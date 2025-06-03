@@ -26,8 +26,7 @@
         <label>Email</label>
         <input placeholder="Email" required="" type="email" value="<?= hsc($email)?>" /><br /><br />
         <label> Date d'inscription</label>
-        <imput placeholder="Date d'inscription" required="" type="date" value=">
-        <?php $date=date_create(hsc($dateInscription));echo date_format($date,"d/m/Y") ?>
+        <input type="text" value=" <?php $date=date_create(hsc($dateInscription));echo date_format($date,"d/m/Y") ?>" readonly /><br /><br />
         <button type="submit">💾 Enregistrer</button>
       </form>
     </div>
