@@ -6,20 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modifier Profil Chien</title>
     <link href="css/style.css" rel="stylesheet" />
-    <style>
-        .card-chien {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
 
-
-    </style>
 </head>
 
 <body>

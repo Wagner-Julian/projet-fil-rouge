@@ -18,6 +18,7 @@
             <input name="nom_chien" placeholder="Nom du chien" required="" type="text" /><br /><br />
             <input name="race" placeholder="Race" required="" type="text" /><br /><br />
             <input name="date_naissance_chien" placeholder="Date de naissance Chien (jj/mm/aaaa)" required="" type="text" /><br /><br />
+            
             <button type="submit">Ajouter le chien</button>
         </form>
 

@@ -134,6 +134,15 @@ main {
   font-size: 0.9rem;
 }
 
+.card-chien-supprimer a{
+    text-decoration: none;
+  background: #db0404;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
 
 /* Styles des formulaires */
 form {
