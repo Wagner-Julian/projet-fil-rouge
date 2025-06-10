@@ -94,43 +94,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idRace = $pdo->lastInsertId();
     }
 
-    // Mise à jour ou insertion
-    if (!empty($idChienPost)) {
-        $stmtUpdate = $pdo->prepare("
-            UPDATE chien
-            SET nom_chien = :nom_chien,
-                date_naissance_chien = :date_naissance_chien,
-                id_race = :id_race
-            WHERE id_chien = :id_chien
-            AND id_utilisateur = :id_utilisateur
-        ");
-        $stmtUpdate->execute([
-            ':nom_chien'            => $nomChienPost,
-            ':date_naissance_chien' => $dateNaissance,
-            ':id_race'              => $idRace,
-            ':id_chien'             => $idChienPost,
-            ':id_utilisateur'       => $idUtilisateur
-        ]);
-    } else {
-        $stmtInsert = $pdo->prepare("
-            INSERT INTO chien
-            (nom_chien, date_inscription, date_naissance_chien, id_utilisateur, id_race)
-            VALUES
-            (:nom_chien, :date_inscription, :date_naissance_chien, :id_utilisateur, :id_race)
-        ");
-        $stmtInsert->execute([
-            ':nom_chien'            => $nomChienPost,
-            ':date_inscription'     => $dateInscription,
-            ':date_naissance_chien' => $dateNaissance,
-            ':id_utilisateur'       => $idUtilisateur,
-            ':id_race'              => $idRace
-        ]);
-        $idChien = $pdo->lastInsertId();
-    }
+$idCoursPost = $_POST['id_cours'] ?? null; // Récupère l'id_cours si on modifie
 
-    $_SESSION['chien_inscrit'] = true;
-    header("Location: profilChien.php");
-    exit();
+// Vérification ou création du type
+$stmt = $pdo->prepare("SELECT id_type FROM type WHERE nom_type = :nom_type");
+$stmt->execute(['nom_type' => $typeCours]);
+$type = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($type) {
+    $idType = $type['id_type'];
+} else {
+    $stmt = $pdo->prepare("INSERT INTO type (nom_type) VALUES (:nom_type)");
+    $stmt->execute(['nom_type' => $typeCours]);
+    $idType = $pdo->lastInsertId();
+}
+
+$idStatus = 1;
+$dateCreation = (new DateTime())->format('Y-m-d H:i:s');
+
+if (!empty($idCoursPost)) {
+    // 👉 Mise à jour du cours existant
+    $stmtUpdate = $pdo->prepare("
+        UPDATE cours
+        SET nom_cours = :nom,
+            date_cours = :date,
+            heure_cours = :heure,
+            duree_cours = :duree_cours,
+            nb_places_cours = :places,
+            id_type = :id_type,
+            id_status = :id_status,
+            id_tranche = :id_tranche
+        WHERE id_cours = :id_cours
+        AND id_utilisateur = :id_utilisateur
+    ");
+    $stmtUpdate->execute([
+        ':nom'             => $nomCours,
+        ':date'            => $dateCours,
+        ':heure'           => $heureCours,
+        ':duree_cours'     => $dureeCours,
+        ':places'          => $places,
+        ':id_type'         => $idType,
+        ':id_status'       => $idStatus,
+        ':id_tranche'      => $idTranche,
+        ':id_cours'        => $idCoursPost,
+        ':id_utilisateur'  => $id_utilisateur
+    ]);
+
+    $_SESSION['message'] = "✅ Le cours a été modifié avec succès !";
+
+} else {
+    // 👉 Insertion d'un nouveau cours
+    $stmtInsert = $pdo->prepare("
+        INSERT INTO cours (
+            nom_cours, date_creation_cours, date_cours, heure_cours, duree_cours,
+            nb_places_cours, id_utilisateur, id_type, id_status, id_tranche
+        ) VALUES (
+            :nom, :date_creation_cours, :date, :heure, :duree_cours,
+            :places, :id_utilisateur, :id_type, :id_status, :id_tranche
+        )
+    ");
+    $stmtInsert->execute([
+        ':nom' => $nomCours,
+        ':date_creation_cours' => $dateCreation,
+        ':date' => $dateCours,
+        ':heure' => $heureCours,
+        ':duree_cours' => $dureeCours,
+        ':places' => $places,
+        ':id_utilisateur' => $id_utilisateur,
+        ':id_type' => $idType,
+        ':id_status' => $idStatus,
+        ':id_tranche' => $idTranche
+    ]);
+
+    $_SESSION['message'] = "✅ Le cours a été ajouté avec succès !";
+}
+
+// Redirige vers la page coach
+header("Location: coach.php");
+exit;
 }
 
 

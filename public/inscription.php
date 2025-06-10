@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'] ?? null;
     $prenom = $_POST['prenom'] ?? null;
     $email = $_POST['email'] ?? null;
-    $dateInscription = date('Y-m-d');
+    $dateInscription = (new DateTime())->format('Y-m-d H:i:s');
     $nomUtilisateur = $_POST['nom_utilisateur'] ?? null;
     $motDePasse = password_hash($_POST['mot_de_passe'] ?? "", PASSWORD_BCRYPT);
     $confirmationMotDePasse = $_POST['confirmation_mot_de_passe'] ?? null;
@@ -24,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // ✅ Insertion de l'utilisateur
-    $sql = "INSERT INTO utilisateur (nom, prenom, email, date_inscription, nom_utilisateur, mot_de_passe, confirmation_mot_de_passe, id_role)
-            VALUES (:nom, :email, :date_inscription, :nom_utilisateur, :mot_de_passe, :id_role)";
+    $sql = "INSERT INTO utilisateur (nom, prenom, email, date_inscription, nom_utilisateur, mot_de_passe, id_role)
+            VALUES (:nom, :prenom, :email, :date_inscription, :nom_utilisateur, :mot_de_passe, :id_role)";
     $stmt = $pdo->prepare($sql);
     $idRole = 3; // rôle par défaut
     $stmt->execute([
@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':date_inscription' => $dateInscription,
         ':nom_utilisateur' => $nomUtilisateur,
         ':mot_de_passe' => $motDePasse,
-        ':confirmation_mot_de_passe' => $confirmationMotDePasse,
         ':id_role' => $idRole
     ]);
 
