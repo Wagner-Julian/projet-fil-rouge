@@ -11,13 +11,13 @@ if (!$idUtilisateur) {
     die("Utilisateur non connecté.");
 }
 
-// 1. Initialiser les variables par défaut
+// Initialiser les variables
 $nomChien      = '';
 $raceChien     = '';
 $dateNaissance = '';
 $idChien       = '';
 
-// 2. Récupérer tous les chiens (pour afficher les cards)
+// Récupérer tous les chiens (pour afficher les cards)
 $sqlAllChiens = "
     SELECT
     c.id_chien,
@@ -33,7 +33,7 @@ $stmtAll = $pdo->prepare($sqlAllChiens);
 $stmtAll->execute([':id_utilisateur' => $idUtilisateur]);
 $chiens = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
 
-// 3. Si on veut préremplir le formulaire (GET?id_chien=XX)
+// Préremplir le formulaire si GET?id_chien
 if (isset($_GET['id_chien'])) {
     $idChien = $_GET['id_chien'];
 
@@ -58,121 +58,102 @@ if (isset($_GET['id_chien'])) {
     }
 }
 
-// 4. Traitement du formulaire (POST)
+// Traitement du formulaire POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idChienPost         = $_POST['id_chien'] ?? null;
-    $nomChienPost        = $_POST['nom_chien'] ?? null;
+    $nomChien            = $_POST['nom_chien'] ?? null;
     $racePost            = $_POST['race'] ?? null;
-    $dateNaissanceInput  = $_POST['date_naissance_chien'] ?? null; // format 'dd/mm/yyyy'
-    $dateNaissance       = '';
+    $dateNaissanceInput  = $_POST['date_naissance_chien'] ?? null;
+    $dateNaissance       = null;
 
-    // Vérifier format de date
-    if ($dateNaissanceInput) {
+    // Vérification de la date
+    if ($dateNaissanceInput && !is_null($dateNaissanceInput)) {
         $dateObj = DateTime::createFromFormat('d/m/Y', $dateNaissanceInput);
+
         if (!$dateObj || $dateObj->format('d/m/Y') !== $dateNaissanceInput) {
-            die("Format de date invalide (jj/mm/aaaa).");
+            die("Format de date invalide. Format attendu : jj/mm/aaaa.");
         }
-        if ($dateObj > new DateTime()) {
+
+        $dateActuelle = new DateTime();
+        if ($dateObj > $dateActuelle) {
             die("La date de naissance ne peut pas être dans le futur.");
         }
+
         $dateNaissance = $dateObj->format('Y-m-d');
     }
 
     // Vérifier ou insérer la race
-    $stmtCompare = $pdo->prepare("SELECT id_race FROM race WHERE nom_race = :nom_race");
+    $sqlCompare = "SELECT id_race FROM race WHERE nom_race = :nom_race";
+    $stmtCompare = $pdo->prepare($sqlCompare);
     $stmtCompare->execute([':nom_race' => $racePost]);
     $recherche = $stmtCompare->fetch(PDO::FETCH_ASSOC);
 
     if ($recherche) {
         $idRace = $recherche['id_race'];
     } else {
-        $stmtInsertRace = $pdo->prepare("
-            INSERT INTO race (nom_race, origine, descriptif)
-            VALUES (:nom_race, 'Inconnue', 'Aucune description.')
-        ");
-        $stmtInsertRace->execute([':nom_race' => $racePost]);
+        $origine = "Inconnue";
+        $descriptif = "Aucune description.";
+
+        $sqlInsertRace = "INSERT INTO race (nom_race, origine, descriptif)
+                        VALUES (:nom_race, :origine, :descriptif)";
+        $stmtInsert = $pdo->prepare($sqlInsertRace);
+        $stmtInsert->execute([
+            ':nom_race' => $racePost,
+            ':origine' => $origine,
+            ':descriptif' => $descriptif
+        ]);
+
         $idRace = $pdo->lastInsertId();
     }
 
-$idCoursPost = $_POST['id_cours'] ?? null; // Récupère l'id_cours si on modifie
+    // Si modification (UPDATE)
+if (!empty($idChienPost)) {
+    // UPDATE
+    $sqlUpdateChien = "UPDATE chien
+                    SET nom_chien = :nom_chien,
+                        date_naissance_chien = :date_naissance_chien,
+                        id_race = :id_race
+                    WHERE id_chien = :id_chien
+                    AND id_utilisateur = :id_utilisateur";
 
-// Vérification ou création du type
-$stmt = $pdo->prepare("SELECT id_type FROM type WHERE nom_type = :nom_type");
-$stmt->execute(['nom_type' => $typeCours]);
-$type = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($type) {
-    $idType = $type['id_type'];
-} else {
-    $stmt = $pdo->prepare("INSERT INTO type (nom_type) VALUES (:nom_type)");
-    $stmt->execute(['nom_type' => $typeCours]);
-    $idType = $pdo->lastInsertId();
-}
-
-$idStatus = 1;
-$dateCreation = (new DateTime())->format('Y-m-d H:i:s');
-
-if (!empty($idCoursPost)) {
-    // 👉 Mise à jour du cours existant
-    $stmtUpdate = $pdo->prepare("
-        UPDATE cours
-        SET nom_cours = :nom,
-            date_cours = :date,
-            heure_cours = :heure,
-            duree_cours = :duree_cours,
-            nb_places_cours = :places,
-            id_type = :id_type,
-            id_status = :id_status,
-            id_tranche = :id_tranche
-        WHERE id_cours = :id_cours
-        AND id_utilisateur = :id_utilisateur
-    ");
-    $stmtUpdate->execute([
-        ':nom'             => $nomCours,
-        ':date'            => $dateCours,
-        ':heure'           => $heureCours,
-        ':duree_cours'     => $dureeCours,
-        ':places'          => $places,
-        ':id_type'         => $idType,
-        ':id_status'       => $idStatus,
-        ':id_tranche'      => $idTranche,
-        ':id_cours'        => $idCoursPost,
-        ':id_utilisateur'  => $id_utilisateur
+    $stmtChien = $pdo->prepare($sqlUpdateChien);
+    $stmtChien->execute([
+        ':nom_chien' => $nomChien,
+        ':date_naissance_chien' => $dateNaissance,
+        ':id_race' => $idRace,
+        ':id_chien' => $idChienPost,
+        ':id_utilisateur' => $idUtilisateur
     ]);
 
-    $_SESSION['message'] = "✅ Le cours a été modifié avec succès !";
+    $_SESSION['chien_modifie'] = true;
+
+    // Redirection vers modifieProfilChien.php?id_chien=XX
+    header("Location: modifieProfilChien.php");
+    exit();
 
 } else {
-    // 👉 Insertion d'un nouveau cours
-    $stmtInsert = $pdo->prepare("
-        INSERT INTO cours (
-            nom_cours, date_creation_cours, date_cours, heure_cours, duree_cours,
-            nb_places_cours, id_utilisateur, id_type, id_status, id_tranche
-        ) VALUES (
-            :nom, :date_creation_cours, :date, :heure, :duree_cours,
-            :places, :id_utilisateur, :id_type, :id_status, :id_tranche
-        )
-    ");
-    $stmtInsert->execute([
-        ':nom' => $nomCours,
-        ':date_creation_cours' => $dateCreation,
-        ':date' => $dateCours,
-        ':heure' => $heureCours,
-        ':duree_cours' => $dureeCours,
-        ':places' => $places,
-        ':id_utilisateur' => $id_utilisateur,
-        ':id_type' => $idType,
-        ':id_status' => $idStatus,
-        ':id_tranche' => $idTranche
+    // INSERT
+    $sqlChien = "INSERT INTO chien (nom_chien, date_inscription, date_naissance_chien, id_utilisateur, id_race)
+                VALUES (:nom_chien, :date_inscription, :date_naissance_chien, :id_utilisateur, :id_race)";
+    $stmtChien = $pdo->prepare($sqlChien);
+    $stmtChien->execute([
+        ':nom_chien' => $nomChien,
+        ':date_inscription' => $dateInscription,
+        ':date_naissance_chien' => $dateNaissance,
+        ':id_utilisateur' => $idUtilisateur,
+        ':id_race' => $idRace
     ]);
 
-    $_SESSION['message'] = "✅ Le cours a été ajouté avec succès !";
+    $_SESSION['chien_inscrit'] = true;
+
+    // Récupérer l'ID du chien inséré
+    $idChienInsert = $pdo->lastInsertId();
+
+    // Redirection vers profilChien.php
+    header("Location: profilChien.php");
+    exit();
 }
 
-// Redirige vers la page coach
-header("Location: coach.php");
-exit;
 }
-
 
 require_once __DIR__ . '/../templates/modifieProfilChien.html.php';

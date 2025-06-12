@@ -10,6 +10,7 @@
   <div id="top"></div>
 <?php require_once __DIR__ .'/_header.html.php'; ?>
   <main>
+
     <section class="card accueil">
       <h1>🐾 Bienvenue au Club Canin</h1>
       <p>

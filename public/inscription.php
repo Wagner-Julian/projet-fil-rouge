@@ -39,6 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     $idUtilisateur = $pdo->lastInsertId();
+    $_SESSION['utilisateur-inscrit'] = true;
+
+        header("Location: login.php");
+    exit();
 }
 
 

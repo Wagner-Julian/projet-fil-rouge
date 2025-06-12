@@ -14,6 +14,12 @@
 
   <main>
 
+  
+      <?php if (!empty($_SESSION['utilisateur-inscrit'])): ?>
+    <p id="success-message" class="message-success">✅ inscription fait avec succès.</p>
+    <?php unset($_SESSION['utilisateur-inscrit']); ?>
+<?php endif; ?>
+
     <h2>Connexion 🔐</h2>
     <form method="POST" action="login.php">
       <input name="email" id="emailInput" placeholder="email" type="email" /><br /><br />
