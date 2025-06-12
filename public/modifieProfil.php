@@ -4,6 +4,44 @@ session_start();
 require_once __DIR__ . '/../include/connection-base-donnees.php';
 require_once __DIR__ . '/../include/fonction.php';
 
+$idUtilisateur = $_SESSION['id_utilisateur'] ?? null;
+
+if (!$idUtilisateur) {
+    die("Utilisateur non connecté.");
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // UPDATE utilisateur
+    $nom = $_POST['nom'] ?? '';
+    $prenom = $_POST['prenom'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $nomUtilisateur = $_POST['nom_utilisateur'] ?? '';
+
+    $sqlUpdateUtilisateur = "UPDATE utilisateur
+                            SET nom = :nom,
+                                prenom = :prenom,
+                                email = :email,
+                                nom_utilisateur = :nom_utilisateur
+                            WHERE id_utilisateur = :id_utilisateur";
+
+    $stmtUpdateUtilisateur = $pdo->prepare($sqlUpdateUtilisateur);
+    $stmtUpdateUtilisateur->execute([
+        ':nom' => $nom,
+        ':prenom' => $prenom,
+        ':email' => $email,
+        ':nom_utilisateur' => $nomUtilisateur,
+        ':id_utilisateur' => $idUtilisateur
+    ]);
+
+    // Message de succès
+    $_SESSION['profil_modifie'] = true;
+
+    // Redirection pour éviter le re-post du formulaire
+    header("Location: modifieProfil.php");
+    exit();
+}
+
 $sql = "SELECT  
     u.nom, u.prenom, u.email, u.nom_utilisateur,u.date_inscription, 
     c.id_chien, c.nom_chien, c.date_naissance_chien, c.date_inscription,
