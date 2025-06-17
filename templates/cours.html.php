@@ -34,7 +34,7 @@
             <p><strong>Date :</strong> <?= htmlspecialchars($cours['date_cours']) ?></p>
             <p><strong>Heure :</strong> <?= htmlspecialchars($cours['heure_cours']) ?></p>
             <p><strong>Durée :</strong> <?= htmlspecialchars(formatDuree($cours['duree_cours'])) ?></p>
-            <p><strong>Places :</strong> <?= (int)($cours['nb_places_cours']) ?></p>
+            <p><strong>Places :</strong> <?= max(0, (int)$cours['nb_places_cours']) ?></p>
             <p><strong>Coach :</strong> <?= htmlspecialchars($cours['nom_utilisateur']) ?></p>
 
             <!-- Formulaire de réservation -->
@@ -61,7 +61,11 @@
                     <?php endforeach; ?>
                 </select>
 
-                <button type="submit">✅ Réserver ce cours</button>
+                <?php if ((int)$cours['nb_places_cours'] > 0): ?>
+    <button type="submit">✅ Réserver ce cours</button>
+<?php else: ?>
+    <p class="message-erreur">❌ Plus de places disponibles</p>
+<?php endif; ?>
             </form>
         </div>
     <?php endforeach; ?>

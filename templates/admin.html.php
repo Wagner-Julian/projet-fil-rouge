@@ -14,97 +14,68 @@
   <main>
     <h2 class="section-title">🛠️ Administration du site</h2>
 
-    <!-- Formulaire pour ajouter un cours -->
-    <form class="form-ajout-cours">
-      <h3>➕ Ajouter un cours</h3>
-      <input type="text" name="name" placeholder="Nom du cours" required><br><br>
-      <input type="text" name="age" placeholder="Tranche d'âge (ex : 6-12 mois)" required><br><br>
-      <input type="date" name="date" required><br><br>
-      <label for="time">Heure du cours :</label><br />
-      <input id="time" name="time" type="time" required /><br /><br />
-      <input type="number" name="places" placeholder="Nombre de places" required><br><br>
-      <button type="submit">Ajouter</button>
-    </form>
-
+    
     <hr>
-
-    <!-- Liste des cours existants -->
-    <h3>📚 Cours existants</h3>
-
-    <div class="card">
-      <h4>École du chiot</h4>
-      <p><strong>Âge :</strong> 0-5 mois</p>
-      <p><strong>Date :</strong> 2024-03-15</p>
-      <p><strong>Heures :</strong> 9h</p>
-      <p><strong>Places :</strong> 2</p>
-      <button>🔁 Réinitialiser les places</button>
-      <button>❌ Supprimer</button>
-    </div>
-    <div class="card">
-      <h4>Éducation Junior</h4>
-      <p><strong>Âge :</strong> 6-12 mois</p>
-      <p><strong>Date :</strong> 2024-03-16</p>
-      <p><strong>Heures :</strong> 9h</p>
-      <p><strong>Places :</strong> 1</p>
-      <button>🔁 Réinitialiser les places</button>
-      <button>❌ Supprimer</button>
-    </div>
-    <div class="card">
-      <h4>Dressage adulte</h4>
-      <p><strong>Âge :</strong> 1+ ans</p>
-      <p><strong>Date :</strong> 2024-03-18</p>
-      <p><strong>Heures :</strong> 9h</p>
-      <p><strong>Places :</strong> 5</p>
-      <button>🔁 Réinitialiser les places</button>
-      <button>❌ Supprimer</button>
-    </div>
-
-    <hr>
-
+    
     <!-- Gestion des droits des utilisateurs -->
-    <h3>👥 Gestion des utilisateurs</h3>
+<h3>👥 Gestion des utilisateurs</h3>
 
-    <table class="table-utilisateurs">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Nom d'utilisateur</th>
-          <th>Rôle actuel</th>
-          <th>Changer rôle</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Jean Dupont</td>
-          <td class=" elipse"> jean.dupont@example.com</td>
-          <td>jdupont</td>
-          <td>Utilisateur</td>
-          <td>
-            <select>
-              <option value="user" selected>Utilisateur</option>
-              <option value="coach">Coach</option>
-              <option value="admin">Admin</option>
-            </select>
-            <button>✅ Appliquer</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Sophie Martin</td>
-          <td class="elipse">sophie.martin@example.com</td>
-          <td>smartin</td>
-          <td>Coach</td>
-          <td>
-            <select>
-              <option value="user">Utilisateur</option>
-              <option value="coach" selected>Coach</option>
-              <option value="admin">Admin</option>
-            </select>
-            <button>✅ Appliquer</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<?php if (isset($_SESSION['utilisateur_supprime'])): ?>
+  <p id="success-message" class="message-success">✅ Utilisateur supprimé avec succès.</p>
+  <?php unset($_SESSION['utilisateur_supprime']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['erreur_suppression'])): ?>
+  <p id="error-message" class="message-error">❌ <?= $_SESSION['erreur_suppression']; ?></p>
+  <?php unset($_SESSION['erreur_suppression']); ?>
+<?php endif; ?>
+
+    <?php if (!empty($_SESSION['role_modifie'])): ?>
+      <p id="success-message" class="message-success">✅ Role modifié avec succès.</p>
+      <?php unset($_SESSION['role_modifie']); ?>
+    <?php endif; ?>
+
+<table class="table-utilisateurs">
+  <thead>
+    <tr>
+      <th>Nom d'utilisateur</th>
+      <th>Email</th>
+      <th>Rôle actuel</th>
+      <th>Changer rôle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($membres as $id => $membre): ?>
+    <tr>
+      <td><?= hsc($membre['nom_utilisateur']) ?></td>
+      <td class="elipse"><?= hsc($membre['email']) ?></td>
+      <td><?= hsc($membre['nom_role']) ?></td>
+      <td class="position-boutton">
+        <form method="POST" action="admin.php">
+          <input type="hidden" name="id_utilisateur" value="<?= $id ?>">
+          <select name="nouveau_role">
+            <option value="Utilisateur" <?= $membre['nom_role'] === 'Utilisateur' ? 'selected' : '' ?>>Utilisateur</option>
+            <option value="Coach" <?= $membre['nom_role'] === 'Coach' ? 'selected' : '' ?>>Coach</option>
+            <option value="Admin" <?= $membre['nom_role'] === 'Admin' ? 'selected' : '' ?>>Admin</option>
+          </select>
+          <button type="submit">✅ Appliquer</button>
+        </form>
+        
+        <!-- Formulaire pour supprimer (séparé) avec confirmation JS -->
+  <form method="POST" action="admin.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+  <input type="hidden" name="supprimer_utilisateur" value="<?= $id ?>">
+  <button type="submit">❌ Supprimer</button>
+  </form>
+        
+      </td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+
+
+    <hr>
+
   </main>
 </body>
 <a href="#top" class="back-to-top" aria-label="Retour en haut">

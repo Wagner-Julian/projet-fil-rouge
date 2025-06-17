@@ -13,13 +13,23 @@ $id_utilisateur = $_SESSION['id_utilisateur'];
 
 // Récupérer les cours
 $stmt = $pdo->prepare("
-    SELECT c.*, t.nom AS nom_tranche, t.age_min_mois, t.age_max_mois, ty.nom_type, u.nom_utilisateur
+    SELECT 
+        c.*, 
+        t.nom AS nom_tranche, 
+        t.age_min_mois, 
+        t.age_max_mois, 
+        ty.nom_type, 
+        u.nom_utilisateur,
+        (nb_places_cours - COUNT(r.id_reservation)) AS nb_places_cours
     FROM cours c
     LEFT JOIN tranche_age t ON c.id_tranche = t.id_tranche
     LEFT JOIN type ty ON c.id_type = ty.id_type
     LEFT JOIN utilisateur u ON c.id_utilisateur = u.id_utilisateur
+    LEFT JOIN reservation r ON r.id_cours = c.id_cours
+    GROUP BY c.id_cours
     ORDER BY c.date_cours ASC
 ");
+
 
 $stmt->execute();
 $coursUtilisateur = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -82,6 +92,25 @@ if (isset($_POST['id_cours']) && isset($_POST['id_chien'])) {
 
             $ok = $ageMois >= $ageMin && (is_null($ageMax) || $ageMois <= $ageMax);
 
+// Vérifier si le chien est déjà inscrit à ce cours
+$stmtCheck = $pdo->prepare("
+    SELECT COUNT(*) FROM reservation WHERE id_chien = :id_chien AND id_cours = :id_cours
+");
+$stmtCheck->execute([
+    ':id_chien' => $id_chien,
+    ':id_cours' => $id_cours
+]);
+
+$dejaInscrit = $stmtCheck->fetchColumn();
+
+if ($dejaInscrit > 0) {
+    $_SESSION['message'] = "❌ Ce chien est déjà inscrit à ce cours.";
+    header("Location: cours.php");
+    exit;
+}
+
+
+
             if ($ok) {
                 // Insérer la réservation
                 $stmtInsert = $pdo->prepare("
@@ -93,6 +122,7 @@ if (isset($_POST['id_cours']) && isset($_POST['id_chien'])) {
                     ':id_cours' => $id_cours
                 ]);
                 $_SESSION['message'] = "✅ Inscription réussie avec succès !";
+
             } 
                 // Redirige pour éviter un re-submit
     header("Location: cours.php");
