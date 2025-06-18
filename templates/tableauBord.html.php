@@ -16,53 +16,53 @@
     <h2>📊 Tableau de bord</h2>
 
     <div class="card">
-      <h3>👤 Bienvenue, Jean Dupont</h3>
-      <p><strong>Nom d'utilisateur :</strong> jdupont</p>
-      <p><strong>Email :</strong> jean.dupont@example.com</p>
+      <h3>👤 Bienvenue, <?= htmlspecialchars($utilisateur['prenom'] . ' ' . $utilisateur['nom']) ?></h3>
+      <p><strong>Nom d'utilisateur :</strong> <?= htmlspecialchars($utilisateur['nom_utilisateur']) ?></p>
+      <p><strong>Email :</strong> <?= htmlspecialchars($utilisateur['email']) ?></p>
     </div>
 
     <div class="card">
-      <h3>🐶 Mon chien</h3>
-      <ul>
-        <li><strong>Max</strong> – Berger Allemand – 3 ans (2021-01-20)</li>
-      </ul>
+      <h3>🐶 Mes chiens</h3>
+      <?php if (empty($chiens)): ?>
+        <p>Aucun chien enregistré.</p>
+      <?php else: ?>
+        <ul>
+          <?php foreach ($chiens as $chien): ?>
+            <li><strong><?= hsc($chien['nom_chien']) ?></strong> – <?= hsc($chien['nom_race']) ?> – <?= ageChien($chien['date_naissance_chien']) ?> (<?= hsc($chien['date_naissance_chien']) ?>)</li>
+          <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
     </div>
 
     <div class="card">
       <h3>📅 Cours disponibles</h3>
+      <?php if (empty($coursDisponibles)): ?>
+        <p>Aucun cours disponible pour le moment.</p>
+      <?php else: ?>
+        <?php foreach ($coursDisponibles as $cours): ?>
+          <div class="card">
+            <h3><?= hsc($cours['nom_cours']) ?></h3>
+            <p><strong>Tranche :</strong> <?= hsc($cours['nom_tranche']) ?></p>
+            <p><strong>Date :</strong> <?= hsc($cours['date_cours']) ?></p>
+            <p><strong>Heure :</strong> <?= hsc($cours['heure_cours']) ?></p>
+            <p><strong>Places restantes :</strong> <?= max(0, (int)$cours['nb_places']) ?></p>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
 
-      <div class="card">
-        <h3>École du chiot</h3>
-        <p><strong>Âge :</strong> 0-5 mois</p>
-        <p><strong>Date :</strong> 2024-03-15</p>
-        <p><strong>Heures :</strong> 9h</p>
-        <p><strong>Places restantes :</strong> 2</p>
-        <button>Réserver</button>
-      </div>
-      <div class="card">
-        <h3>Éducation Junior</h3>
-        <p><strong>Âge :</strong> 6-12 mois</p>
-        <p><strong>Date :</strong> 2024-03-16</p>
-        <p><strong>Heures :</strong> 14h</p>
-        <p><strong>Places restantes :</strong> 1</p>
-        <button>Réserver</button>
-      </div>
-      <div class="card">
-        <h3>Dressage adulte</h3>
-        <p><strong>Âge :</strong> 1+ ans</p>
-        <p><strong>Date :</strong> 2024-03-18</p>
-        <p><strong>Heures :</strong> 14h</p>
-        <p><strong>Places restantes :</strong> 5</p>
-        <button>Réserver</button>
-      </div>
-
-      <div class="card">
-        <h3>✅ Mes réservations</h3>
+    <div class="card">
+      <h3>✅ Mes réservations</h3>
+      <?php if (empty($reservations)): ?>
+        <p>Aucune réservation.</p>
+      <?php else: ?>
         <ul>
-          <li>École du chiot – 2024-03-15 – 9h </li>
-          <li>Éducation Junior – 2024-03-16 – 14h </li>
+          <?php foreach ($reservations as $resa): ?>
+            <li><?= hsc($resa['nom_cours']) ?> – <?= hsc($resa['date_cours']) ?> – <?= hsc($resa['heure_cours']) ?></li>
+          <?php endforeach; ?>
         </ul>
-      </div>
+      <?php endif; ?>
+    </div>
   </main>
   <a href="#top" class="back-to-top" aria-label="Retour en haut">
     ↟
