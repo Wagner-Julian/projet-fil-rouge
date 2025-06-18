@@ -119,7 +119,7 @@ $stmtUtilisateur = $pdo->prepare(
 "SELECT u.nom_utilisateur, u.email, u.nom, u.prenom FROM utilisateur WHERE u.id_utilisateur = :id_utilisateur
 
 ");
-$stmtUtilisateur->execute([':id_utilisateur'=> $idUtilisateur]);
+$stmtUtilisateur->execute([':id_utilisateur' => $id_utilisateur]);
 $utilisateurInfos=$stmtUtilisateur->fetch(PDO::FETCH_ASSOC);
 
 require_once __DIR__ . '/../templates/tableauBord.html.php';
