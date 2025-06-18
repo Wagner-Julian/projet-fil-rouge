@@ -115,10 +115,7 @@ $stmtReservations->execute([':id_utilisateur' => $id_utilisateur]);
 $reservationsUtilisateur = $stmtReservations->fetchAll(PDO::FETCH_ASSOC);
 
 
-$stmtUtilisateur = $pdo->prepare(
-"SELECT u.nom_utilisateur, u.email, u.nom, u.prenom FROM utilisateur WHERE u.id_utilisateur = :id_utilisateur
-
-");
+$stmtUtilisateur = $pdo->prepare("SELECT nom_utilisateur, email, nom, prenom FROM utilisateur WHERE id_utilisateur = :id_utilisateur");
 $stmtUtilisateur->execute([':id_utilisateur' => $id_utilisateur]);
 $utilisateurInfos=$stmtUtilisateur->fetch(PDO::FETCH_ASSOC);
 
