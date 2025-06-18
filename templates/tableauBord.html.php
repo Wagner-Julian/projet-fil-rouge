@@ -16,58 +16,68 @@
     <h2>📊 Tableau de bord</h2>
 
     <div class="card">
-      <h3>👤 Bienvenue, Jean Dupont</h3>
-      <p><strong>Nom d'utilisateur :</strong> jdupont</p>
-      <p><strong>Email :</strong> jean.dupont@example.com</p>
+      <h3>👤 Bienvenue, <?= hsc($utilisateurInfos['nom']) ?> <?= hsc($utilisateurInfos['nom'])?></h3>
+      <p><strong>Nom d'utilisateur :</strong> <?= hsc($utilisateurInfos['nom_utilisateur']) ?> </p>
+      <p><strong>Email :</strong> <?= hsc($utilisateurInfos['email']) ?></p>
     </div>
 
+    <h2>🐕 Nos derniers cours</h2>
+
+    <?php if (!empty($_SESSION['message'])): ?>
+      <div id="success-message" class="message-success">
+        <?= $_SESSION['message'];
+        unset($_SESSION['message']); ?>
+      </div>
+    <?php endif; ?>
+
+    <?php if (empty($coursCoach)): ?>
+      <p>Aucun cours créé pour le moment.</p>
+    <?php else: ?>
+<?php foreach ($coursCoach as $cours): ?>
+  <div class="card">
+    <h4><?= htmlspecialchars($cours['nom_cours']) ?></h4>
+    <p><strong>Tranche d’âge :</strong> <?= htmlspecialchars($cours['nom_tranche']) ?></p>
+    <p><strong>Type de cours :</strong> <?= htmlspecialchars($cours['nom_type']) ?></p>
+    <p><strong>Date :</strong> <?= htmlspecialchars($cours['date_cours']) ?></p>
+    <p><strong>Heure :</strong> <?= htmlspecialchars($cours['heure_cours']) ?></p>
+    <p><strong>Durée :</strong> <?= htmlspecialchars(formatDuree($cours['duree_cours'])) ?></p>
+    <p><strong>Places restantes :</strong> <?= max(0, (int)$cours['nb_places_cours']) ?></p>
+    <p><strong>Coach :</strong> <?= htmlspecialchars($cours['nom_utilisateur']) ?></p>
+    <p><strong>Chien Inscrit : </strong> <?= htmlspecialchars($cours['chiens_inscrits'] ?? 'Aucun') ?> </p>
+
+    <?php if ((int)$cours['nb_places_cours'] <= 0): ?>
+      <p class="message-erreur">❌ Plus de places disponibles</p>
+    <?php endif; ?>
+  </div>
+<?php endforeach; ?>
+<?php endif; ?>
+
+
+
+
     <div class="card">
-      <h3>🐶 Mon chien</h3>
+  <?php if (empty($reservationsUtilisateur)): ?>
+    <p>Vous n'avez pas encore de réservation.</p>
+    <?php else: ?>
       <ul>
-        <li><strong>Max</strong> – Berger Allemand – 3 ans (2021-01-20)</li>
-      </ul>
-    </div>
+    <h3>Mes réservations</h3>
+        <?php foreach ($reservationsUtilisateur as $resa): ?>
+          <?php
+          $date = dateFormatEurope($resa['date_cours']);
+          $heure = htmlspecialchars($resa['heure_cours']);
+          $nomCours = htmlspecialchars($resa['nom_cours']);
+          $nomChien = htmlspecialchars($resa['nom_chien']);
+        ?>
+        <li><?= "$nomCours – $date – $heure – 🐶 $nomChien" ?></li>
+      <?php endforeach; ?>
+    </ul>
+  <?php endif; ?>
 
-    <div class="card">
-      <h3>📅 Cours disponibles</h3>
-
-      <div class="card">
-        <h3>École du chiot</h3>
-        <p><strong>Âge :</strong> 0-5 mois</p>
-        <p><strong>Date :</strong> 2024-03-15</p>
-        <p><strong>Heures :</strong> 9h</p>
-        <p><strong>Places restantes :</strong> 2</p>
-        <button>Réserver</button>
-      </div>
-      <div class="card">
-        <h3>Éducation Junior</h3>
-        <p><strong>Âge :</strong> 6-12 mois</p>
-        <p><strong>Date :</strong> 2024-03-16</p>
-        <p><strong>Heures :</strong> 14h</p>
-        <p><strong>Places restantes :</strong> 1</p>
-        <button>Réserver</button>
-      </div>
-      <div class="card">
-        <h3>Dressage adulte</h3>
-        <p><strong>Âge :</strong> 1+ ans</p>
-        <p><strong>Date :</strong> 2024-03-18</p>
-        <p><strong>Heures :</strong> 14h</p>
-        <p><strong>Places restantes :</strong> 5</p>
-        <button>Réserver</button>
-      </div>
-
-      <div class="card">
-        <h3>✅ Mes réservations</h3>
-        <ul>
-          <li>École du chiot – 2024-03-15 – 9h </li>
-          <li>Éducation Junior – 2024-03-16 – 14h </li>
-        </ul>
-      </div>
+  
+</div>
   </main>
-  <a href="#top" class="back-to-top" aria-label="Retour en haut">
-    ↟
-  </a>
 
+  <a href="#top" class="back-to-top" aria-label="Retour en haut">↟</a>
   <?php require_once __DIR__ . '/_footer.html.php'; ?>
 </body>
 
