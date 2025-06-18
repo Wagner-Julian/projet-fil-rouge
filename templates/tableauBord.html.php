@@ -15,8 +15,8 @@
   <main>
     <h2>📊 Tableau de bord</h2>
 
-  <div class="card">
-        <h3>👤 Bienvenue, <?= hsc($utilisateurInfos['prenom']) ?> <?= hsc($utilisateurInfos['nom']) ?></h3>
+    <div class="card">
+      <h3>👤 Bienvenue, <?= hsc($utilisateurInfos['prenom']) ?> <?= hsc($utilisateurInfos['nom']) ?></h3>
       <p><strong>Nom d'utilisateur :</strong> <?= hsc($utilisateurInfos['nom_utilisateur']) ?> </p>
       <p><strong>Email :</strong> <?= hsc($utilisateurInfos['email']) ?></p>
     </div>
