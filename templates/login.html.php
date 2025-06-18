@@ -16,7 +16,7 @@
 
   
       <?php if (!empty($_SESSION['utilisateur-inscrit'])): ?>
-    <p id="success-message" class="message-success">✅ inscription fait avec succès.</p>
+    <p id="success-message" class="message-success">✅ inscription faite avec succès.</p>
     <?php unset($_SESSION['utilisateur-inscrit']); ?>
       <dialog open>
   <p> Bienvenue dans le Club Canin ! Veuillez vous connecter pour accéder à l'inscription chien !</p>
