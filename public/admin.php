@@ -42,8 +42,11 @@ if (isset($_POST['supprimer_utilisateur'])) {
     // Ne pas permettre la suppression de soi-même
     if ($idUtilisateurASupprimer != $_SESSION['id_utilisateur']) {
 
-        $stmtDelete = $pdo->prepare("DELETE FROM chien WHERE id_utilisateur = :id_utilisateur; DELETE FROM utilisateur WHERE id_utilisateur = :id_utilisateur");
-        $stmtDelete->execute([':id_utilisateur' => $idUtilisateurASupprimer]);
+        $stmtDeleteChien = $pdo->prepare("DELETE FROM chien WHERE id_utilisateur = :id_utilisateur");
+        $stmtDeleteChien->execute([':id_utilisateur' => $idUtilisateurASupprimer]);
+
+        $stmtDeleteUtilisateur = $pdo->prepare("DELETE FROM utilisateur WHERE id_utilisateur = :id_utilisateur");
+        $stmtDeleteUtilisateur->execute([':id_utilisateur' => $idUtilisateurASupprimer]);
 
         $_SESSION['utilisateur_supprime'] = true;
     } else {
