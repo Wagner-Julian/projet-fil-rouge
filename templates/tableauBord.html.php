@@ -68,7 +68,11 @@
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>
+
         <li class="reservation-item">
+
+        <li>
+
           <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
           <span class="card-chien-supprimer">
             <a
