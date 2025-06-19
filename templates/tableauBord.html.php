@@ -56,19 +56,23 @@
 
 
     <div class="card">
+    <h3>Mes réservations</h3>
   <?php if (empty($reservationsUtilisateur)): ?>
     <p>Vous n'avez pas encore de réservation.</p>
-    <?php else: ?>
-      <ul>
-    <h3>Mes réservations</h3>
-        <?php foreach ($reservationsUtilisateur as $resa): ?>
+  <?php else: ?>
+    <ul class="liste-reservations">
+      <?php foreach ($reservationsUtilisateur as $resa): ?>
           <?php
           $date = dateFormatEurope($resa['date_cours']);
           $heure = htmlspecialchars($resa['heure_cours']);
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>
+
+        <li class="reservation-item">
+
         <li>
+
           <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
           <span class="card-chien-supprimer">
             <a
