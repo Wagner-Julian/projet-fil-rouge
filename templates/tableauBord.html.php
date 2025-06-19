@@ -56,19 +56,29 @@
 
 
     <div class="card">
+    <h3>Mes réservations</h3>
   <?php if (empty($reservationsUtilisateur)): ?>
     <p>Vous n'avez pas encore de réservation.</p>
-    <?php else: ?>
-      <ul>
-    <h3>Mes réservations</h3>
-        <?php foreach ($reservationsUtilisateur as $resa): ?>
+  <?php else: ?>
+    <ul class="liste-reservations">
+      <?php foreach ($reservationsUtilisateur as $resa): ?>
           <?php
           $date = dateFormatEurope($resa['date_cours']);
           $heure = htmlspecialchars($resa['heure_cours']);
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>
-        <li><?= "$nomCours – $date – $heure – 🐶 $nomChien" ?></li>
+        <li class="reservation-item">
+          <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
+          <span class="card-chien-supprimer">
+            <a
+              href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
+              onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
+            >
+              ✖ Annuler
+            </a>
+          </span>
+        </li>
       <?php endforeach; ?>
     </ul>
   <?php endif; ?>

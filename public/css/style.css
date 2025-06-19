@@ -157,6 +157,23 @@ main {
   font-size: 0.9rem;
 }
 
+.card-chien-supprimer {
+  margin-left: 12px;
+}
+
+.liste-reservations {
+  list-style: none;
+  padding: 0;
+}
+
+.reservation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+
 .card-membre {
   border: 1px solid #00000067;
   border-radius: 8px;

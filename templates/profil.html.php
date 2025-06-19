@@ -15,6 +15,13 @@
   <main>
     <h2>👤 Mon Profil</h2>
 
+    <?php if (!empty($_SESSION['message'])): ?>
+      <div id="success-message" class="message-success">
+        <?= $_SESSION['message'];
+        unset($_SESSION['message']); ?>
+      </div>
+    <?php endif; ?>
+
     <!-- Carte : Informations personnelles -->
     <div class="card profil-card">
       <img
@@ -39,11 +46,11 @@
 
     <!-- Réservations -->
     <div class="card">
+      <h3>Mes réservations</h3>
   <?php if (empty($reservationsUtilisateur)): ?>
     <p>Vous n'avez pas encore de réservation.</p>
     <?php else: ?>
-      <ul>
-    <h3>Mes réservations</h3>
+      <ul class="liste-reservations">
         <?php foreach ($reservationsUtilisateur as $resa): ?>
           <?php
           $date = dateFormatEurope($resa['date_cours']);
@@ -51,7 +58,17 @@
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>
-        <li><?= "$nomCours – $date – $heure – 🐶 $nomChien" ?></li>
+        <li class="reservation-item">
+          <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
+          <span class="card-chien-supprimer">
+            <a
+              href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
+              onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
+            >
+              ✖ Annuler
+            </a>
+          </span>
+        </li>
       <?php endforeach; ?>
     </ul>
   <?php endif; ?>
