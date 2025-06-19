@@ -157,6 +157,16 @@ main {
   font-size: 0.9rem;
 }
 
+.annuler-reservation {
+  text-decoration: none;
+  background: #db0404;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+
 .card-membre {
   border: 1px solid #00000067;
   border-radius: 8px;

@@ -68,7 +68,16 @@
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>
-        <li><?= "$nomCours – $date – $heure – 🐶 $nomChien" ?></li>
+        <li>
+          <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
+          <a
+            href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
+            class="annuler-reservation"
+            onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
+          >
+            Annuler
+          </a>
+        </li>
       <?php endforeach; ?>
     </ul>
   <?php endif; ?>

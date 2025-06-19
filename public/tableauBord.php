@@ -104,7 +104,7 @@ if (isset($_POST['id_cours']) && isset($_POST['id_chien'])) {
 }
 
 $stmtReservations = $pdo->prepare("
-SELECT c.nom_cours, c.date_cours, c.heure_cours, ch.nom_chien
+SELECT r.id_reservation, c.nom_cours, c.date_cours, c.heure_cours, ch.nom_chien
 FROM reservation r
 INNER JOIN cours c ON c.id_cours = r.id_cours
 INNER JOIN chien ch ON ch.id_chien = r.id_chien
