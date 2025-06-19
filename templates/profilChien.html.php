@@ -41,7 +41,7 @@
 
         <div class="profil-btn">
             <a href="modifieProfilChien.php">
-                <button>✏️ Modifier profil Chien</button>
+                <button>✏️ Modifier ou ajouter Chien</button>
             </a>
         </div>
 

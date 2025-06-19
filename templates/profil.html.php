@@ -39,12 +39,25 @@
 
     <!-- Réservations -->
     <div class="card">
-      <h3>📅 Mes réservations</h3>
+  <?php if (empty($reservationsUtilisateur)): ?>
+    <p>Vous n'avez pas encore de réservation.</p>
+    <?php else: ?>
       <ul>
-        <li>École du chiot – 2024-03-15 – 9h </li>
-        <li>Éducation Junior – 2024-03-16 – 14h </li>
-      </ul>
-    </div>
+    <h3>Mes réservations</h3>
+        <?php foreach ($reservationsUtilisateur as $resa): ?>
+          <?php
+          $date = dateFormatEurope($resa['date_cours']);
+          $heure = htmlspecialchars($resa['heure_cours']);
+          $nomCours = htmlspecialchars($resa['nom_cours']);
+          $nomChien = htmlspecialchars($resa['nom_chien']);
+        ?>
+        <li><?= "$nomCours – $date – $heure – 🐶 $nomChien" ?></li>
+      <?php endforeach; ?>
+    </ul>
+  <?php endif; ?>
+
+  
+</div>
 
     <div class="profil-btn">
       <a href="modifieProfil.php">
