@@ -1,8 +1,12 @@
 <?php
+
 session_start();
 
 require_once __DIR__ . '/../include/connection-base-donnees.php';
+
 require_once __DIR__ . '/../include/fonction.php';
+
+$id_utilisateur = $_SESSION['id_utilisateur'] ?? null;
 
 // Sécurité : vérifier que l'utilisateur est bien connecté
 if (!isset($_SESSION['id_utilisateur'])) {
@@ -12,7 +16,7 @@ if (!isset($_SESSION['id_utilisateur'])) {
 // Récupération des données utilisateur
 $sql = "SELECT nom, prenom, email, nom_utilisateur FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([':id_utilisateur' => $_SESSION['id_utilisateur']]);
+$stmt->execute([':id_utilisateur' => $id_utilisateur]);
 $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Vérifie si des données ont été trouvées
