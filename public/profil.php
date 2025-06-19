@@ -13,6 +13,33 @@ if (!isset($_SESSION['id_utilisateur'])) {
     die("Utilisateur non connecté.");
 }
 
+// Annulation d'une réservation
+if (isset($_GET['annuler'])) {
+    $idReservation = (int) $_GET['annuler'];
+    $idUtilisateur = $_SESSION['id_utilisateur'];
+
+    $sqlVerif = "SELECT r.id_reservation
+        FROM reservation r
+        JOIN chien c ON r.id_chien = c.id_chien
+        WHERE r.id_reservation = :id_reservation
+          AND c.id_utilisateur = :id_utilisateur";
+    $stmtVerif = $pdo->prepare($sqlVerif);
+    $stmtVerif->execute([
+        ':id_reservation' => $idReservation,
+        ':id_utilisateur' => $idUtilisateur
+    ]);
+    $reservation = $stmtVerif->fetch(PDO::FETCH_ASSOC);
+
+    if ($reservation) {
+        $stmtDelete = $pdo->prepare("DELETE FROM reservation WHERE id_reservation = :id_reservation");
+        $stmtDelete->execute([':id_reservation' => $idReservation]);
+        $_SESSION['message'] = "✅ Réservation annulée avec succès.";
+    }
+
+    header('Location: profil.php');
+    exit;
+}
+
 // Récupération des données utilisateur
 $sql = "SELECT nom, prenom, email, nom_utilisateur FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
 $stmt = $pdo->prepare($sql);
@@ -31,7 +58,7 @@ if ($utilisateur) {
 
 
 $stmtReservations = $pdo->prepare("
-SELECT c.nom_cours, c.date_cours, c.heure_cours, ch.nom_chien
+SELECT r.id_reservation, c.nom_cours, c.date_cours, c.heure_cours, ch.nom_chien
 FROM reservation r
 INNER JOIN cours c ON c.id_cours = r.id_cours
 INNER JOIN chien ch ON ch.id_chien = r.id_chien

@@ -15,6 +15,13 @@
   <main>
     <h2>👤 Mon Profil</h2>
 
+    <?php if (!empty($_SESSION['message'])): ?>
+      <div id="success-message" class="message-success">
+        <?= $_SESSION['message'];
+        unset($_SESSION['message']); ?>
+      </div>
+    <?php endif; ?>
+
     <!-- Carte : Informations personnelles -->
     <div class="card profil-card">
       <img
@@ -51,7 +58,17 @@
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>
-        <li><?= "$nomCours – $date – $heure – 🐶 $nomChien" ?></li>
+        <li>
+          <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
+          <span class="card-chien-supprimer">
+            <a
+              href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
+              onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
+            >
+              ✖ Annuler
+            </a>
+          </span>
+        </li>
       <?php endforeach; ?>
     </ul>
   <?php endif; ?>
