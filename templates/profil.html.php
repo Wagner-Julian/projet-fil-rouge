@@ -60,13 +60,14 @@
         ?>
         <li>
           <?= "$nomCours – $date – $heure – 🐶 $nomChien" ?>
-          <a
-            href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
-            class="annuler-reservation"
-            onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
-          >
-            Annuler
-          </a>
+          <span class="card-chien-supprimer">
+            <a
+              href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
+              onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
+            >
+              ✖ Annuler
+            </a>
+          </span>
         </li>
       <?php endforeach; ?>
     </ul>
