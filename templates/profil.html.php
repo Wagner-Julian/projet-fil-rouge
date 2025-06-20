@@ -66,7 +66,7 @@
               href="profil.php?annuler=<?= $resa['id_reservation'] ?>"
               onclick="return confirm('Êtes-vous bien sûr de vous désinscrire du cours ?');"
             >
-              ✖ Annuler
+              ❌ Annuler
             </a>
           </span>
         </li>

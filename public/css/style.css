@@ -150,13 +150,13 @@ main {
 
 .card-chien-supprimer a{
     text-decoration: none;
-  background: #db0404;
+  background: #007bff;
   color: white;
   padding: 8px 12px;
   border-radius: 4px;
   font-size: 0.9rem;
   display: flex;
-  justify-content: space-between;
+
 }
 
 
@@ -175,6 +175,7 @@ main {
   align-items: flex-start;
   margin-bottom: 8px;
   justify-content: space-between;
+  
 }
 
 
