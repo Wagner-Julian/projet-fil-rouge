@@ -59,7 +59,7 @@ if (isset($_GET['id_chien'])) {
 }
 
 // Traitement du formulaire POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['formCu'] === '1') {
     $idChienPost         = $_POST['id_chien'] ?? null;
     $nomChien            = $_POST['nom_chien'] ?? null;
     $racePost            = $_POST['race'] ?? null;
@@ -156,7 +156,7 @@ if (!empty($idChienPost)) {
 
 }
 
-if (isset($_POST['supprimer_chien'])) {
+if (isset($_POST['supprimer_chien']) && $_POST['formSupprimer'] === '2') {
     $idChienASupprimer = $_POST['supprimer_chien'];
 
     // Ne pas permettre la suppression de soi-même
@@ -165,12 +165,13 @@ if (isset($_POST['supprimer_chien'])) {
         $stmtDeleteChien = $pdo->prepare("DELETE FROM chien WHERE id_chien = :id_chien");
         $stmtDeleteChien->execute([':id_chien' => $idChienASupprimer]);
 
-        $_SESSION['chien_supprime'] = true;
+        $_SESSION['supprimer_chien'] = true;
+        var_dump($_SESSION['supprimer_chien']);
     } else {
         $_SESSION['erreur_suppression'] = "Vous ne pouvez pas supprimer votre propre compte.";
     }
 
-    header("Location: admin.php");
+    header("Location:  modifieProfilChien.php");
     exit();
 }
 

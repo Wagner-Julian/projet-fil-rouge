@@ -41,7 +41,7 @@ if (!empty($idCoursEdit)) {
 }
 
 // ✅ Traitement du formulaire
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['formCu'] === '1') {
 
     // Données formulaire
     $idCoursPost = $_POST['id_cours'] ?? null; // sert pour savoir si on UPDATE ou INSERT
@@ -153,6 +153,33 @@ foreach ($coursCoach as &$cours) {
     $cours['heure_cours'] = convertirHeure($cours['heure_cours']);
 }
 unset($cours); // bonne pratique
+
+
+if (
+    $_SERVER["REQUEST_METHOD"] === "POST" &&
+    isset($_POST['supprimer_cours'], $_POST['formSupprimer']) &&
+    $_POST['formSupprimer'] === '2'
+) {
+    $idcoursASupprimer = (int) $_POST['supprimer_cours'];
+
+    $stmt = $pdo->prepare("SELECT id_utilisateur FROM cours WHERE id_cours = :id_cours");
+    $stmt->execute(['id_cours' => $idcoursASupprimer]);
+    $cours = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$cours || $cours['id_utilisateur'] != $id_utilisateur) {
+        $_SESSION['erreur_suppression'] = "Action non autorisée.";
+    } else {
+        $stmtDeletecours = $pdo->prepare("DELETE FROM cours WHERE id_cours = :id_cours");
+        $stmtDeletecours->execute([':id_cours' => $idcoursASupprimer]);
+
+        $_SESSION['supprimer_cours'] = true;
+    }
+
+    header("Location: coach.php");
+    exit;
+}
+
+
 
 // On charge le template HTML
 require_once __DIR__ . '/../templates/coach.html.php';

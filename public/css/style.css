@@ -80,7 +80,9 @@ main {
     margin-bottom: 20px;
     border-radius: 6px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
+
 
 .card h3 {
     margin-top: 0;
@@ -164,6 +166,11 @@ main {
   margin-left: 12px;
 }
 
+.boutton-supprimer-modifier{
+  display: flex;
+  align-items: baseline;
+}
+
 .liste-reservations {
   list-style: none;
   padding: 0;
@@ -188,6 +195,7 @@ main {
   justify-content: space-between;
   align-items: center;
 }
+
 
 
 /* Styles des formulaires */

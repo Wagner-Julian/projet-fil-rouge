@@ -18,9 +18,9 @@
         <h2>✏️ Modifier les informations d’un chien</h2>
 
 
-        <?php if (isset($_SESSION['utilisateur_supprime'])): ?>
-  <p id="success-message" class="message-success">✅ Utilisateur supprimé avec succès.</p>
-  <?php unset($_SESSION['utilisateur_supprime']); ?>
+        <?php if (isset($_SESSION['supprimer_chien'])): ?>
+  <p id="success-message" class="message-success">✅ Chien supprimé avec succès.</p>
+  <?php unset($_SESSION['supprimer_chien']); ?>
 <?php endif; ?>
 
 <?php if (isset($_SESSION['erreur_suppression'])): ?>
@@ -32,6 +32,7 @@
             <h2><?= $idChien ? 'Modifier le chien' : '➕ Ajouter un autre chien' ?></h2>
             <form method="post" action="modifieProfilChien.php">
                 <input type="hidden" name="id_chien" value="<?= hsc($idChien) ?>" />
+                <input  type="hidden" name="formCu" value="1"/>
         
                 <label>Nom du chien :</label><br />
                 <input
@@ -83,11 +84,11 @@
                             ✏️ Modifier
                         </a>
                     </div>
-                                <div class="card-chien-supprimer">
-                <a href="modifieProfilChien.php?id_chien=<?= hsc($c['id_chien']) ?>">
-                  ❌ Supprimer
-                </a>
-            </div>
+  <form method="POST" action="modifieProfilChien.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le chien <?= hsc($c['nom_chien']) ?> ?');">
+  <input type="hidden" name="supprimer_chien" value="<?= $c['id_chien'] ?>">
+  <input type="hidden" name="formSupprimer" value="2"/>
+  <button type="submit">❌ Supprimer</button>
+  </form>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

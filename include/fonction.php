@@ -18,10 +18,10 @@ function ageChien($dateNaissanceChien)
         return $age->y . ' ans ' . $age->m . ' mois';
     }
 }
-function hsc($string)
-{
-    return htmlspecialchars($string);
+function hsc($string) {
+    return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
 }
+
 
 
 // 🔒 Vérification de la date

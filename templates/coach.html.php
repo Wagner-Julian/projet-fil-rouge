@@ -16,6 +16,17 @@
   <main>
     <h2>⚙️ Coach</h2>
 
+
+    <?php if (isset($_SESSION['supprimer_cours'])): ?>
+      <p id="success-message" class="message-success">✅ Cours supprimé avec succès.</p>
+      <?php unset($_SESSION['supprimer_cours']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['erreur_suppression'])): ?>
+      <p id="error-message" class="message-error">❌ <?= $_SESSION['erreur_suppression']; ?></p>
+      <?php unset($_SESSION['erreur_suppression']); ?>
+    <?php endif; ?>
+
     <?php if (!empty($_SESSION['message'])): ?>
       <div id="success-message" class="message-success">
         <?= $_SESSION['message'];
@@ -30,15 +41,16 @@
       <!-- Si on modifie un cours -->
       <?php if (!empty($coursEdit)): ?>
         <input type="hidden" name="id_cours" value="<?= $coursEdit['id_cours'] ?>">
+        <input type="hidden" name="formCu" value="1" />
       <?php endif; ?>
 
       <label>Nom du cours :</label><br>
       <input name="name" placeholder="Nom du cours" required type="text"
-        value="<?= !empty($coursEdit) ? htmlspecialchars($coursEdit['nom_cours']) : '' ?>" /><br><br>
+        value="<?= !empty($coursEdit) ? hsc($coursEdit['nom_cours']) : '' ?>" /><br><br>
 
       <label>Type de cours :</label><br>
       <input name="type" placeholder="Type de cours" required type="text"
-        value="<?= !empty($coursEdit) ? htmlspecialchars($coursEdit['nom_type']) : '' ?>" /><br><br>
+        value="<?= !empty($coursEdit) ? hsc($coursEdit['nom_type']) :  '' ?>" /><br><br>
 
       <label>Tranche d’âge :</label><br>
       <select name="id_tranche" required>
@@ -46,18 +58,18 @@
         <?php foreach ($tranches_age as $tranche): ?>
           <option value="<?= $tranche['id_tranche'] ?>"
             <?= (!empty($coursEdit) && $coursEdit['id_tranche'] == $tranche['id_tranche']) ? 'selected' : '' ?>>
-            <?= htmlspecialchars($tranche['nom']) ?>
+            <?= hsc($tranche['nom']) ?>
           </option>
         <?php endforeach; ?>
       </select><br><br>
 
       <label>Date du cours :</label><br>
       <input name="date" placeholder="Date (jj/mm/aaaa)" required type="text"
-        value="<?= !empty($coursEdit) ? htmlspecialchars($coursEdit['date_cours']) : '' ?>" /><br><br>
+        value="<?= !empty($coursEdit) ? hsc($coursEdit['date_cours']) : '' ?>" /><br><br>
 
       <label>Heure du cours :</label><br>
       <input type="time" name="time" required style="width: 120px;"
-        value="<?= !empty($coursEdit) ? htmlspecialchars($coursEdit['heure_cours']) : '' ?>" /><br><br>
+        value="<?= !empty($coursEdit) ? hsc($coursEdit['heure_cours']) : '' ?>" /><br><br>
 
       <label>Durée :</label><br>
       <select name="duree_cours">
@@ -84,20 +96,24 @@
     <?php else: ?>
       <?php foreach ($coursCoach as $cours): ?>
         <div class="card">
-          <h4><?= htmlspecialchars($cours['nom_cours']) ?></h4>
-          <p><strong>Tranche d’âge :</strong> <?= htmlspecialchars($cours['nom_tranche']) ?></p>
-          <p><strong>Type de cours :</strong> <?= htmlspecialchars($cours['nom_type']) ?></p>
-          <p><strong>Date :</strong> <?= htmlspecialchars($cours['date_cours']) ?></p>
-          <p><strong>Heure :</strong> <?= htmlspecialchars($cours['heure_cours']) ?></p>
-          <p><strong>Durée :</strong> <?= htmlspecialchars(formatDuree($cours['duree_cours'])) ?></p>
+          <h4><?= hsc($cours['nom_cours']) ?></h4>
+          <p><strong>Tranche d’âge :</strong> <?= hsc($cours['nom_tranche']) ?></p>
+          <p><strong>Type de cours :</strong> <?= hsc($cours['nom_type']) ?></p>
+          <p><strong>Date :</strong> <?= hsc($cours['date_cours']) ?></p>
+          <p><strong>Heure :</strong> <?= hsc($cours['heure_cours']) ?></p>
+          <p><strong>Durée :</strong> <?= hsc(formatDuree($cours['duree_cours'])) ?></p>
           <p><strong>Places :</strong> <?= (int)($cours['nb_places_cours']) ?></p>
-          <p><strong>Date création :</strong> <?= htmlspecialchars($cours['date_creation_cours']) ?></p>
-
-          <a href="coach.php?edit=<?= $cours['id_cours'] ?>">
-            <button type="button">🔁 Modifier le cours</button>
-
-          </a>
-          <button>❌ Supprimer</button>
+          <p><strong>Date création :</strong> <?= hsc($cours['date_creation_cours']) ?></p>
+          <div class="boutton-supprimer-modifier">
+            <a href="coach.php?edit=<?= $cours['id_cours'] ?>">
+              <button type="button">🔁 Modifier le cours</button>
+            </a>
+            <form method="POST" action="coach.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le cours <?= hsc($cours['nom_cours']) ?> ?');">
+              <input type="hidden" name="supprimer_cours" value="<?= $cours['id_cours'] ?>">
+              <input type="hidden" name="formSupprimer" value="2" />
+              <button type="submit" class="supprimer_cours">❌ Supprimer</button>
+            </form>
+          </div>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
