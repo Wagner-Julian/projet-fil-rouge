@@ -19,7 +19,7 @@
         <div class="card profil-card">
             <img
                 id="chien-photo-<?= $index ?>"
-                src="https://via.placeholder.com/150?text=Chien"
+                src="https://placehold.co/150x150/smoke/gray?text=Photo+de+Chien&font=playfair-display"
                 alt="Photo du chien"
                 class="chien-photo" />
             <div class="profil-info">

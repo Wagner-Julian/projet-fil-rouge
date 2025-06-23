@@ -16,6 +16,17 @@
     <main>
         
         <h2>✏️ Modifier les informations d’un chien</h2>
+
+
+        <?php if (isset($_SESSION['utilisateur_supprime'])): ?>
+  <p id="success-message" class="message-success">✅ Utilisateur supprimé avec succès.</p>
+  <?php unset($_SESSION['utilisateur_supprime']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['erreur_suppression'])): ?>
+  <p id="error-message" class="message-error">❌ <?= $_SESSION['erreur_suppression']; ?></p>
+  <?php unset($_SESSION['erreur_suppression']); ?>
+<?php endif; ?>
         
         <div class="card">
             <h2><?= $idChien ? 'Modifier le chien' : '➕ Ajouter un autre chien' ?></h2>
@@ -72,6 +83,11 @@
                             ✏️ Modifier
                         </a>
                     </div>
+                                <div class="card-chien-supprimer">
+                <a href="modifieProfilChien.php?id_chien=<?= hsc($c['id_chien']) ?>">
+                  ❌ Supprimer
+                </a>
+            </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

@@ -26,7 +26,7 @@
     <div class="card profil-card">
       <img
         id="profil-photo"
-        src="https://via.placeholder.com/150"
+        src="https://placehold.co/150x150/smoke/grey?text=Photo+de+profil&font=playfair-display"
         alt="Photo de profil"
         class="profil-photo" />
       <div class="profil-info">
@@ -54,7 +54,7 @@
         <?php foreach ($reservationsUtilisateur as $resa): ?>
           <?php
           $date = dateFormatEurope($resa['date_cours']);
-          $heure = htmlspecialchars($resa['heure_cours']);
+          $heure = convertirHeure($resa['heure_cours']);
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>

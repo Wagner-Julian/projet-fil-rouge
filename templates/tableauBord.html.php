@@ -39,7 +39,7 @@
     <p><strong>Tranche d’âge :</strong> <?= htmlspecialchars($cours['nom_tranche']) ?></p>
     <p><strong>Type de cours :</strong> <?= htmlspecialchars($cours['nom_type']) ?></p>
     <p><strong>Date :</strong> <?= htmlspecialchars($cours['date_cours']) ?></p>
-    <p><strong>Heure :</strong> <?= htmlspecialchars($cours['heure_cours']) ?></p>
+    <p><strong>Heure :</strong> <?= convertirHeure($cours['heure_cours']) ?></p>
     <p><strong>Durée :</strong> <?= htmlspecialchars(formatDuree($cours['duree_cours'])) ?></p>
     <p><strong>Places restantes :</strong> <?= max(0, (int)$cours['nb_places_cours']) ?></p>
     <p><strong>Coach :</strong> <?= htmlspecialchars($cours['nom_utilisateur']) ?></p>
@@ -64,7 +64,7 @@
       <?php foreach ($reservationsUtilisateur as $resa): ?>
           <?php
           $date = dateFormatEurope($resa['date_cours']);
-          $heure = htmlspecialchars($resa['heure_cours']);
+          $heure = convertirHeure($resa['heure_cours']);
           $nomCours = htmlspecialchars($resa['nom_cours']);
           $nomChien = htmlspecialchars($resa['nom_chien']);
         ?>

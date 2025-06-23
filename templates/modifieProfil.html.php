@@ -68,7 +68,7 @@
             </div>
             <div class="card-chien-supprimer">
                 <a href="modifieProfilChien.php?id_chien=<?= hsc($c['id_chien']) ?>">
-                  ✖ Supprimer
+                  ❌ Supprimer
                 </a>
             </div>
         </div>

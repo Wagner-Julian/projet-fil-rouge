@@ -58,3 +58,14 @@ function formatDuree($minutes) {
     $reste = $minutes % 60;
     return $heures . ' h' . ($reste ? ' ' . $reste . ' min' : '');
 }
+
+function convertirHeure($heure) {
+    $dateTime = DateTime::createFromFormat('H:i:s', $heure);
+
+if($dateTime) {
+    return $dateTime->format('G\hi');
+} else {
+    return 'Heure invalide';
+}
+
+}

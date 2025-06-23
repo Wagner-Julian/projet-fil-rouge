@@ -150,6 +150,7 @@ $coursCoach = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // ✅ On formate les dates pour affichage
 foreach ($coursCoach as &$cours) {
     $cours['date_cours'] = dateFormatEurope($cours['date_cours']);
+    $cours['heure_cours'] = convertirHeure($cours['heure_cours']);
 }
 unset($cours); // bonne pratique
 

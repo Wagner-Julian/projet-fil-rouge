@@ -156,4 +156,25 @@ if (!empty($idChienPost)) {
 
 }
 
+if (isset($_POST['supprimer_chien'])) {
+    $idChienASupprimer = $_POST['supprimer_chien'];
+
+    // Ne pas permettre la suppression de soi-même
+    if ($idChienASupprimer != $_SESSION['id_chien']) {
+
+        $stmtDeleteChien = $pdo->prepare("DELETE FROM chien WHERE id_chien = :id_chien");
+        $stmtDeleteChien->execute([':id_chien' => $idChienASupprimer]);
+
+        $_SESSION['chien_supprime'] = true;
+    } else {
+        $_SESSION['erreur_suppression'] = "Vous ne pouvez pas supprimer votre propre compte.";
+    }
+
+    header("Location: admin.php");
+    exit();
+}
+
+
+
+
 require_once __DIR__ . '/../templates/modifieProfilChien.html.php';
