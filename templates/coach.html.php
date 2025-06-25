@@ -16,7 +16,6 @@
   <main>
     <h2>⚙️ Coach</h2>
 
-
     <?php if (isset($_SESSION['supprimer_cours'])): ?>
       <p id="success-message" class="message-success">✅ Cours supprimé avec succès.</p>
       <?php unset($_SESSION['supprimer_cours']); ?>
@@ -38,10 +37,12 @@
     <form method="post" action="coach.php">
       <h3><?= !empty($coursEdit) ? "✏️ Modifier le cours" : "➕ Ajouter un cours" ?></h3>
 
+      <!-- Champ présent dans tous les cas pour éviter le warning -->
+      <input type="hidden" name="formCu" value="1">
+
       <!-- Si on modifie un cours -->
       <?php if (!empty($coursEdit)): ?>
         <input type="hidden" name="id_cours" value="<?= $coursEdit['id_cours'] ?>">
-        <input type="hidden" name="formCu" value="1" />
       <?php endif; ?>
 
       <label>Nom du cours :</label><br>
@@ -73,10 +74,10 @@
 
       <label>Durée :</label><br>
       <select name="duree_cours">
-        <option value="30" <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 30) ? 'selected' : '' ?>>30 min</option>
-        <option value="60" <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 60) ? 'selected' : '' ?>>1h</option>
-        <option value="90" <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 90) ? 'selected' : '' ?>>1h30</option>
-        <option value="120" <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 120) ? 'selected' : '' ?>>2h</option>
+        <option value="30"  <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 30)  ? 'selected' : '' ?>>30 min</option>
+        <option value="60"  <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 60)  ? 'selected' : '' ?>>1 h</option>
+        <option value="90"  <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 90)  ? 'selected' : '' ?>>1 h 30</option>
+        <option value="120" <?= (!empty($coursEdit) && $coursEdit['duree_cours'] == 120) ? 'selected' : '' ?>>2 h</option>
       </select><br><br>
 
       <label>Nombre de places :</label><br>
@@ -108,17 +109,19 @@
             <a href="coach.php?edit=<?= $cours['id_cours'] ?>">
               <button type="button">🔁 Modifier le cours</button>
             </a>
-            <form method="POST" action="coach.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le cours <?= hsc($cours['nom_cours']) ?> ?');">
+            <form method="POST" action="coach.php"
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le cours <?= hsc($cours['nom_cours']) ?> ?');">
               <input type="hidden" name="supprimer_cours" value="<?= $cours['id_cours'] ?>">
-              <input type="hidden" name="formSupprimer" value="2" />
+              <input type="hidden" name="formSupprimer" value="2">
               <button type="submit" class="supprimer_cours">❌ Supprimer</button>
             </form>
           </div>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
-
   </main>
 
   <a href="#top" class="back-to-top" aria-label="Retour en haut">↟</a>
   <?php require_once __DIR__ . '/_footer.html.php'; ?>
+</body>
+</html>

@@ -41,7 +41,10 @@ if (!empty($idCoursEdit)) {
 }
 
 // ✅ Traitement du formulaire
-if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['formCu'] === '1') {
+if (    $_SERVER["REQUEST_METHOD"] === "POST"
+    && isset($_POST['formCu'])      // ✅ protège l’accès
+    && $_POST['formCu'] === '1') 
+{
 
     // Données formulaire
     $idCoursPost = $_POST['id_cours'] ?? null; // sert pour savoir si on UPDATE ou INSERT
