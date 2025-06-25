@@ -30,25 +30,20 @@ $idUtilisateur = $_SESSION['id_utilisateur'] ?? null;
 $exts = ["jpg", "jpeg", "png", "gif", "webp"];
 
 /* Valeur par défaut si aucune image */
-$imageProfil = "https://placehold.co/150x150/smoke/grey?text=Photo+de+profil&font=playfair-display";
-
-/* Dossier disque = …/public/ressources/telechargement/ */
-$baseDisk = realpath(__DIR__ . "/../public/ressources/telechargement");
-$baseUrl  = "/projet-fil-rouge/public/ressources/telechargement";
-
-if ($idUtilisateur && $baseDisk) {
-    foreach ($exts as $ext) {
-        $file = "profil-$idUtilisateur.$ext";
-        if (file_exists("$baseDisk/$file")) {
-            $imageProfil = "$baseUrl/$file";   // URL navigateur
-            break;
-        }
+$imageProfil = 'https://placehold.co/150x150/smoke/grey?text=Photo+de+profil&font=playfair-display';
+foreach (['jpg','jpeg','png','gif','webp'] as $ext) {
+    $file = "profil-$idUtilisateur.$ext";
+    if (is_file(UPLOAD_DISK.$file)) {
+        $imageProfil = UPLOAD_URL.$file;   // ← plus de “/public”
+        break;
     }
 }
+
 ?>
 
 
 <img id="profil-photo" src="<?= $imageProfil ?>" alt="Photo de profil" class="profil-photo" />
+
 
 
 

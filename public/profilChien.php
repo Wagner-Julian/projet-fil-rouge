@@ -9,6 +9,8 @@ if (!empty($_SESSION['chien_inscrit'])) {
 
 require_once __DIR__ . '/../include/connection-base-donnees.php';
 require_once __DIR__ . '/../include/fonction.php';
+require_once __DIR__ . '/../include/config.php';
+
 
 
 $idUtilisateur = $_SESSION['id_utilisateur'] ?? null;
@@ -21,7 +23,7 @@ if (!$idUtilisateur) {
 
 // Récupérer les infos du chien si elles existent déjà
 $stmt = $pdo->prepare("
-    SELECT c.nom_chien, c.date_naissance_chien, r.nom_race
+    SELECT c.id_chien, c.nom_chien, c.date_naissance_chien, r.nom_race
     FROM chien c
     JOIN race r ON c.id_race = r.id_race
     WHERE c.id_utilisateur = :id
