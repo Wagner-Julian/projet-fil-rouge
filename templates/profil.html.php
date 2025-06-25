@@ -34,7 +34,8 @@ $imageProfil = "https://placehold.co/150x150/smoke/grey?text=Photo+de+profil&fon
 
 /* Dossier disque = …/public/ressources/telechargement/ */
 $baseDisk = realpath(__DIR__ . "/../public/ressources/telechargement");
-$baseUrl  = "/projet-fil-rouge/public/ressources/telechargement";
+// Chemin URL relatif au dossier public
+$baseUrl  = "ressources/telechargement";
 
 if ($idUtilisateur && $baseDisk) {
     foreach ($exts as $ext) {
