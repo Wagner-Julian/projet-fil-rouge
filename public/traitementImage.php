@@ -1,52 +1,61 @@
 <?php
 session_start();
+require_once __DIR__.'/../include/config.php';
 
+
+// Récupération de l'identifiant utilisateur en session
 $idUtilisateur = $_SESSION['id_utilisateur'] ?? null;
 if (!$idUtilisateur) {
     $_SESSION['message'] = "Erreur : utilisateur non connecté.";
-    header("Location: profil.php");
+    header('Location: profil.php');
     exit;
 }
 
-if (
-    isset($_POST['update_photo']) &&
-    isset($_FILES['user_image']) &&
-    $_FILES['user_image']['error'] === 0
-) {
-    $extension  = strtolower(pathinfo($_FILES["user_image"]["name"], PATHINFO_EXTENSION));
-    $allowed    = ["jpg", "jpeg", "png", "gif", "webp"];
+if (isset($_FILES['user_image'])
+    && $_FILES['user_image']['error'] === UPLOAD_ERR_OK) {
 
-    if (!in_array($extension, $allowed)) {
+    $extension = strtolower(pathinfo($_FILES['user_image']['name'], PATHINFO_EXTENSION));
+    $allowed = ['jpg','jpeg','png','gif','webp'];
+
+    if (!in_array($extension, $allowed, true)) {
         $_SESSION['message'] = "Type de fichier non autorisé.";
-        header("Location: profil.php");
+        header('Location: profil.php');
         exit;
     }
 
-    /* Dossier /public/ressources/telechargement/ */
-    $uploadDir = __DIR__ . "/ressources/telechargement/";
+    // Enregistrement
+    $uploadDir = UPLOAD_DISK;                 // constante de config.php
     if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
-    /* On supprime toute ancienne photo de l’utilisateur  */
-    foreach ($allowed as $ext) {
-        $old = $uploadDir . "profil-$idUtilisateur.$ext";
-        if (file_exists($old)) unlink($old);
-    }
-
-    /* On enregistre la nouvelle */
     $newName     = "profil-$idUtilisateur.$extension";
-    $destination = $uploadDir . $newName;
+    $destination = $uploadDir.$newName;
 
-    if (!move_uploaded_file($_FILES["user_image"]["tmp_name"], $destination)) {
-        $_SESSION['message'] = "Erreur lors de l’enregistrement du fichier.";
-        header("Location: profil.php");
+    if (!move_uploaded_file($_FILES['user_image']['tmp_name'], $destination)) {
+        $_SESSION['message'] = "Erreur lors de l'enregistrement du fichier.";
+        header('Location: profil.php');
         exit;
     }
 
     $_SESSION['message'] = "✅ Photo de profil mise à jour !";
-    header("Location: profil.php");
+    header('Location: profil.php');
     exit;
 }
 
+// Gestion des erreurs éventuelles lors de l'envoi du fichier
+if (!isset($_FILES['user_image'])) {
+    $_SESSION['message'] = "Aucun fichier reçu (formulaire incorrect ou taille > post_max_size).";
+    header('Location: profil.php');
+    exit;
+}
+
+if ($_FILES['user_image']['error'] !== UPLOAD_ERR_OK) {
+    $_SESSION['message'] =
+        "Erreur lors de l'envoi du fichier (code ".$_FILES['user_image']['error'].").";
+    header('Location: profil.php');
+    exit;
+}
+
+
 $_SESSION['message'] = "Aucune image reçue.";
-header("Location: profil.php");
+header('Location: profil.php');
 exit;
