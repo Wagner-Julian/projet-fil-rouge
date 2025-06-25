@@ -14,6 +14,12 @@
     <?php require_once __DIR__ . '/_header.html.php'; ?>
     <main>
         <h2>Informations Chien</h2>
+
+            <?php if (!empty($_SESSION['message-chien'])): ?>
+      <div id="success-message" class="message-success">
+        <?= $_SESSION['message-chien']; unset($_SESSION['message-chien']); ?>
+      </div>
+    <?php endif; ?>
         <?php if (!empty($chiens)): ?>
             <?php foreach ($chiens as $index => $chien): ?>
                 <?php

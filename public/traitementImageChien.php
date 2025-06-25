@@ -6,7 +6,7 @@ require_once __DIR__.'/../include/connection-base-donnees.php';
 
 $idUtilisateur = $_SESSION['id_utilisateur'] ?? null;
 if (!$idUtilisateur) {
-    $_SESSION['message'] = 'Erreur : utilisateur non connecté.';
+    $_SESSION['message-chien'] = 'Erreur : utilisateur non connecté.';
     header('Location: profilChien.php');
     exit;
 }
@@ -16,13 +16,13 @@ $idChien = (int) ($_POST['id_chien']   ?? 0);
 $photo   =        $_FILES['chien_image'] ?? null;
 
 if (!$idChien || !$photo) {
-    $_SESSION['message'] = 'Aucun fichier reçu ou identifiant manquant.';
+    $_SESSION['message-chien'] = 'Aucun fichier reçu ou identifiant manquant.';
     header('Location: profilChien.php');
     exit;
 }
 
 if ($photo['error'] !== UPLOAD_ERR_OK) {
-    $_SESSION['message'] = 'Erreur lors de l’envoi du fichier (code '.$photo['error'].').';
+    $_SESSION['message-chien'] = 'Erreur lors de l’envoi du fichier (code '.$photo['error'].').';
     header('Location: profilChien.php');
     exit;
 }
@@ -39,7 +39,7 @@ $stmt->execute([
 ]);
 // securité si une personne essaie de modifier l'image d'un chien d'un autre utilisateur 
 if (!$stmt->fetchColumn()) {
-    $_SESSION['message'] = 'Accès interdit : ce chien ne vous appartient pas.';
+    $_SESSION['message-chien'] = 'Accès interdit : ce chien ne vous appartient pas.';
     header('Location: profilChien.php');
     exit;
 }
@@ -63,11 +63,11 @@ foreach ($allowed as $e) {                        // supprime l’ancienne
 
 $dest = UPLOAD_DISK.'chien-'.$idChien.'.'.$ext;
 if (!move_uploaded_file($photo['tmp_name'], $dest)) {
-    $_SESSION['message'] = 'Erreur lors de la copie du fichier.';
+    $_SESSION['message-chien'] = 'Erreur lors de la copie du fichier.';
     header('Location: profilChien.php');
     exit;
 }
 
-$_SESSION['message'] = '✅ Photo du chien mise à jour !';
+$_SESSION['message-chien'] = '✅ Photo du chien mise à jour !';
 header('Location: profilChien.php');
 
