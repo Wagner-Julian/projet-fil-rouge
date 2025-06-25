@@ -22,7 +22,7 @@ if (isset($_GET['annuler'])) {
         FROM reservation r
         JOIN chien c ON r.id_chien = c.id_chien
         WHERE r.id_reservation = :id_reservation
-          AND c.id_utilisateur = :id_utilisateur";
+        AND c.id_utilisateur = :id_utilisateur";
     $stmtVerif = $pdo->prepare($sqlVerif);
     $stmtVerif->execute([
         ':id_reservation' => $idReservation,
@@ -49,7 +49,7 @@ $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
 // Vérifie si des données ont été trouvées
 if ($utilisateur) {
     $nom = $utilisateur['nom'];
-    $prenom = $utilisateur['prenom'] ?? ''; 
+    $prenom = $utilisateur['prenom'] ?? '';
     $email = $utilisateur['email'];
     $nomUtilisateur = $utilisateur['nom_utilisateur'];
 } else {
@@ -71,10 +71,8 @@ $reservationsUtilisateur = $stmtReservations->fetchAll(PDO::FETCH_ASSOC);
 
 $stmtUtilisateur = $pdo->prepare("SELECT nom_utilisateur, email, nom, prenom FROM utilisateur WHERE id_utilisateur = :id_utilisateur");
 $stmtUtilisateur->execute([':id_utilisateur' => $id_utilisateur]);
-$utilisateurInfos=$stmtUtilisateur->fetch(PDO::FETCH_ASSOC);
+$utilisateurInfos = $stmtUtilisateur->fetch(PDO::FETCH_ASSOC);
 
 
 // Inclusion de la vue
 require_once __DIR__ . '/../templates/profil.html.php';
-
-

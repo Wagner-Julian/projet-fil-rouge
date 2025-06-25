@@ -44,38 +44,5 @@
   </form>
 </div>
 
-
-
-
-<?php if (!empty($chiens)): ?>
-    <?php foreach ($chiens as $c): ?>
-        <div class="card-chien">
-            <div class="card-chien-info">
-                <h4><?= hsc($c['nom_chien']) ?></h4>
-                <p><strong>Race :</strong> <?= hsc($c['nom_race']) ?></p>
-                <p>
-                    <strong> Age :</strong>
-                    <?= ageChien($c['date_naissance_chien']) ?>
-                </p>
-                <p>
-                    <strong>Date de naissance :</strong>
-                    <?= date('d/m/Y', strtotime($c['date_naissance_chien'])) ?>
-                </p>
-                <p>
-                    <strong>Date d'inscription :</strong>
-                    <?= date('d/m/Y', strtotime($c['date_inscription'])) ?>
-                </p>
-            </div>
-            <div class="card-chien-supprimer">
-                <a href="modifieProfilChien.php?id_chien=<?= hsc($c['id_chien']) ?>">
-                  ❌ Supprimer
-                </a>
-            </div>
-        </div>
-    <?php endforeach; ?>
-<?php else: ?>
-    <p>Vous n’avez aucun chien enregistré.</p>
-<?php endif; ?>
-
   </main>
   <?php require_once __DIR__ . '/_footer.html.php'; ?>
