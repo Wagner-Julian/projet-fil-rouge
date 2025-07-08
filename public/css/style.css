@@ -196,6 +196,64 @@ main {
   align-items: center;
 }
 
+.modifier-cours {
+  margin-left: 16px;
+  text-decoration: none;
+  background: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+
+
+/* conteneur */
+.dogs-wrap{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem .8rem;
+  margin-top:.5rem;
+}
+
+/* puce “chien” */
+.dog-chip{
+  background:#f9fafb;
+  border:1px solid #e2e8f0;
+  border-radius:2rem;
+  box-shadow:0 1px 2px rgba(0,0,0,.05);
+  display:inline-flex;
+  align-items:center;
+  gap:.55rem;
+  padding:.35rem .8rem;
+  line-height:1;
+}
+
+/* nom (toujours gris foncé) */
+.dog-name{
+  font-weight:600;
+  font-size:.85rem;
+  color:#334155;      /* ← fixe : n’hérite plus de vert */
+}
+
+/* badge d’état (seul élément coloré) */
+.dog-state{
+  font-size:.72rem;
+  font-weight:600;
+  padding:.15rem .55rem;
+  border-radius:1rem;
+  background:#4CAF50; /* vert ou la couleur que tu veux */
+  color:#fff;
+  text-transform:capitalize;
+}
+
+/* message si aucun chien */
+.aucun-chien{
+  font-style:italic;
+  color:#64748b;
+  margin-top:.4rem;
+}
+
 
 
 /* Styles des formulaires */
@@ -236,6 +294,61 @@ form button[type="submit"] {
 form button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.btn-edit {
+  .card-chien-actions {
+    margin-left: 16px;
+}
+.card-chien-actions a {
+  text-decoration: none;
+  background: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+}
+
+
+   .crop-area {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      cursor: move;
+    }
+
+    .crop-wrapper {
+      width: 100%;
+      height: 100%;
+      border: 3px dashed tomato;
+      border-radius: 50%;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .image-container {
+      position: relative;
+      width: fit-content;
+      height: fit-content;
+    }
+
+    .resize-handle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      bottom: -10px;
+      right: -10px;
+      cursor: nwse-resize;
+      border-radius: 4px;
+    }
+
+    #result-circle {
+      border-radius: 50%;
+    }
 
 
 
@@ -407,11 +520,26 @@ footer {
       flex-direction: column;
       text-align: center;
     }
-  
+    
     .profil-info {
       width: 100%;
     }
+    th,td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: left;
+    font-size: x-small;
   }
+
+form button[type="submit"] {
+  padding: 6px 10px;
+  
+  }
+
+  
+
+
+}
   
   .cours-dispo {
     border-bottom: 1px solid #ddd;
@@ -529,4 +657,11 @@ footer {
     transform: translateX(-50%) scale(1.1);
   }
   
+  .position-boutton{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+  }
   

@@ -42,6 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
+    // 🔍 Vérifier si l’email ou le nom d'utilisateur existe déjà
+    $sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email OR nom_utilisateur = :nom_utilisateur";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':email' => $email,
+        ':nom_utilisateur' => $nomUtilisateur
+    ]);
+
 $sql = "SELECT nom, prenom, email, nom_utilisateur, date_inscription
         FROM utilisateur
         WHERE id_utilisateur = :id_utilisateur";

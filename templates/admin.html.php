@@ -64,7 +64,7 @@
         <!-- Formulaire pour supprimer (séparé) avec confirmation JS -->
   <form method="POST" action="admin.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
   <input type="hidden" name="supprimer_utilisateur" value="<?= $id ?>">
-  <button type="submit">❌ Supprimer</button>
+  <button type="submit">❌Supprimer</button>
   </form>
         
       </td>

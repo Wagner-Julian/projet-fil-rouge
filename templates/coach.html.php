@@ -103,12 +103,30 @@
           <p><strong>Date :</strong> <?= hsc($cours['date_cours']) ?></p>
           <p><strong>Heure :</strong> <?= hsc($cours['heure_cours']) ?></p>
           <p><strong>Durée :</strong> <?= hsc(formatDuree($cours['duree_cours'])) ?></p>
-          <p><strong>Places :</strong> <?= (int)($cours['nb_places_cours']) ?></p>
+          <p><strong>Places :</strong> <?= max(0, (int)$cours['nb_places_cours']) ?></p>
           <p><strong>Date création :</strong> <?= hsc($cours['date_creation_cours']) ?></p>
+          <p><strong>Chiens inscrits au cours </strong> </p>
+          <?php if (!empty($cours['chiens'])): ?>
+            <div class="dogs-wrap">
+    <?php foreach ($cours['chiens'] as $chien): ?>
+        <span class="dog-chip">
+            <span class="dog-name"><?= hsc($chien['nom_chien']) ?></span>
+            <span class="dog-state"><?= hsc($chien['etat_reservation']) ?></span>
+        </span>
+    <?php endforeach; ?>
+</div>
+    </div>
+<?php else: ?>
+    <p class="aucun-chien">Aucun chien inscrit pour ce cours.</p>
+<?php endif; ?>
+
+
+
           <div class="boutton-supprimer-modifier">
-            <a href="coach.php?edit=<?= $cours['id_cours'] ?>">
-              <button type="button">🔁 Modifier le cours</button>
-            </a>
+          <a href="coach.php?edit=<?= $cours['id_cours'] ?>">
+          <button type="button" class="modifier-cours">✏️ Modifier le cours</button>
+          </a>
+
             <form method="POST" action="coach.php"
                   onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le cours <?= hsc($cours['nom_cours']) ?> ?');">
               <input type="hidden" name="supprimer_cours" value="<?= $cours['id_cours'] ?>">

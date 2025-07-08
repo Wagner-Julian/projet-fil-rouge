@@ -138,24 +138,53 @@ if (    $_SERVER["REQUEST_METHOD"] === "POST"
     exit;
 }
 
-// ✅ On récupère TOUS les cours existants du coach
+
+// ✅ Étape 1 : on récupère les chiens inscrits et on les groupe par cours
+$stmt = $pdo->prepare("
+    SELECT c.*, co.id_cours, r.etat_reservation
+    FROM cours co
+    JOIN reservation r ON co.id_cours = r.id_cours
+    JOIN chien c       ON r.id_chien = c.id_chien
+    WHERE co.id_utilisateur = :id_utilisateur
+");
+$stmt->execute(['id_utilisateur' => $id_utilisateur]);
+$chiens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$chiensParCours = [];
+foreach ($chiens as $chien) {
+    $idCours = $chien['id_cours'];
+    $chiensParCours[$idCours][] = $chien;
+}
+
+    /* 4. Décrémenter le compteur */
+    $stmt = $pdo->prepare("
+        UPDATE cours
+        SET nb_places_cours = nb_places_cours - 1
+        WHERE id_cours = :id_cours
+    ");
+    $stmt->execute([':id_cours' => $idCours]);
+
+// ✅ Étape 2 : on récupère les cours
 $stmt = $pdo->prepare("
     SELECT c.*, t.nom AS nom_tranche, ty.nom_type
     FROM cours c
     LEFT JOIN tranche_age t ON c.id_tranche = t.id_tranche
-    LEFT JOIN type ty ON c.id_type = ty.id_type
+    LEFT JOIN type ty       ON c.id_type    = ty.id_type
     WHERE c.id_utilisateur = :id
     ORDER BY c.date_cours ASC
 ");
 $stmt->execute(['id' => $id_utilisateur]);
 $coursCoach = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// ✅ On formate les dates pour affichage
+// ✅ Étape 3 : on injecte les chiens dans chaque cours
 foreach ($coursCoach as &$cours) {
-    $cours['date_cours'] = dateFormatEurope($cours['date_cours']);
+    $cours['date_cours']  = dateFormatEurope($cours['date_cours']);
     $cours['heure_cours'] = convertirHeure($cours['heure_cours']);
+    $coursId = $cours['id_cours'];
+    $cours['chiens'] = $chiensParCours[$coursId] ?? [];
 }
-unset($cours); // bonne pratique
+unset($cours);
+
 
 
 if (
