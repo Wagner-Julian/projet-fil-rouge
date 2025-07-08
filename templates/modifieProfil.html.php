@@ -32,14 +32,10 @@
     <input name="prenom" placeholder="Prénom" required="" type="text" value="<?= hsc($prenom) ?>" /><br /><br />
 
     <label>Nom utilisateur</label>
-    <div id="utilisateurErreur" class=" erreur-message"></div>
-    <input name="nom_utilisateur" id="utilisateurInput" placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur) ?>" /><br /><br />
-    <input type="hidden" id="idUtilisateur" value="<?= $_SESSION['id_utilisateur'] ?>">
+    <input name="nom_utilisateur" placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur) ?>" /><br /><br />
 
     <label>Email</label>
-    <div id="emailErreur" class="erreur-message"></div>
     <input name="email" id="emailInput" placeholder="Email" required="" type="email" value="<?= hsc($email) ?>" /><br /><br />
-    <input type="hidden" id="idUtilisateur" value="<?= $_SESSION['id_utilisateur'] ?>">
 
     
     <label>Date d'inscription</label>
