@@ -19,12 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nomUtilisateur = $_POST['nom_utilisateur'] ?? '';
     
     // 🔍 Vérifier si l’email ou le nom d'utilisateur existe déjà
-    $sql = "SELECT COUNT(*) FROM utilisateur WHERE (email = :email OR nom_utilisateur = :nom_utilisateur) AND id_utilisateur<>:id";
+    $sql = "SELECT COUNT(*) FROM utilisateur WHERE (email = :email OR nom_utilisateur = :nom_utilisateur) AND id_utilisateur<>:id_utilisateur";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':email' => $email,
         ':nom_utilisateur' => $nomUtilisateur,
-        ':id' => $idUtilisateur
+        ':id_utilisateur' => $idUtilisateur
     ]);
         if ($stmt->fetchColumn() > 0) {
         die("L'email ou le nom d'utilisateur est déjà utilisé.");

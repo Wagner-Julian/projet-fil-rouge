@@ -18,8 +18,9 @@ if (backToTop && header) {
 }
 
 // ✅ Vérification email et nom d'utilisateur (champ unique)
-const emailInput = document.getElementById('emailInput');
+const emailInput = document.getElementById('emailInput')
 if (emailInput) {
+  const idUtilisateur= emailInput.dataset.userId;
   emailInput.addEventListener('blur', async () => {
     const reponse = await fetch(`verifchamp.php?email=${encodeURIComponent(emailInput.value)}&id=${idUtilisateur}`);
     const data = await reponse.json();
@@ -31,8 +32,9 @@ if (emailInput) {
   });
 }
 
-const utilisateurInput = document.getElementById('utilisateurInput');
+const utilisateurInput = document.getElementById('utilisateurInput')
 if (utilisateurInput) {
+  const idUtilisateur= utilisateurInput.dataset.userId;
   utilisateurInput.addEventListener('blur', async () => {
     const reponse = await fetch(`verifchamp.php?nom_utilisateur=${encodeURIComponent(utilisateurInput.value)}&id=${idUtilisateur}`);
     const data = await reponse.json();
