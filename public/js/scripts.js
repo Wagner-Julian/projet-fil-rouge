@@ -21,7 +21,7 @@ if (backToTop && header) {
 const emailInput = document.getElementById('emailInput');
 if (emailInput) {
   emailInput.addEventListener('blur', async () => {
-    const reponse = await fetch('verifchamp.php?email=' + encodeURIComponent(emailInput.value));
+    const reponse = await fetch(`verifchamp.php?email=${encodeURIComponent(emailInput.value)}&id=${idUtilisateur}`);
     const data = await reponse.json();
 
     const errorDiv = document.getElementById('emailErreur');
@@ -34,7 +34,7 @@ if (emailInput) {
 const utilisateurInput = document.getElementById('utilisateurInput');
 if (utilisateurInput) {
   utilisateurInput.addEventListener('blur', async () => {
-    const reponse = await fetch('verifchamp.php?nom_utilisateur=' + encodeURIComponent(utilisateurInput.value));
+    const reponse = await fetch(`verifchamp.php?nom_utilisateur=${encodeURIComponent(utilisateurInput.value)}&id=${idUtilisateur}`);
     const data = await reponse.json();
 
     const utilisateurDiv = document.getElementById('utilisateurErreur');

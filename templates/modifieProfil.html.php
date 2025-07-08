@@ -32,11 +32,12 @@
     <input name="prenom" placeholder="Prénom" required="" type="text" value="<?= hsc($prenom) ?>" /><br /><br />
 
     <label>Nom utilisateur</label>
-    <input name="nom_utilisateur" placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur) ?>" /><br /><br />
+    <div id="utilisateurErreur" class=" erreur-message"></div>
+    <input name="nom_utilisateur" id="utilisateurInput" placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur) ?>" /><br /><br />
 
     <label>Email</label>
-    <input name="email" placeholder="Email" required="" type="email" value="<?= hsc($email) ?>" /><br /><br />
-
+    <div id="emailErreur" class="erreur-message"></div>
+    <input name="email" id="emailInput" placeholder="Email" required="" type="email" value="<?= hsc($email) ?>" /><br /><br />
     <label>Date d'inscription</label>
     <input type="text" value="<?php $date=date_create(hsc($dateInscription));echo date_format($date,"d/m/Y") ?>" readonly /><br /><br />
 

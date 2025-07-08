@@ -11,13 +11,24 @@ if (!$idUtilisateur) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    
     // UPDATE utilisateur
     $nom = $_POST['nom'] ?? '';
     $prenom = $_POST['prenom'] ?? '';
     $email = $_POST['email'] ?? '';
     $nomUtilisateur = $_POST['nom_utilisateur'] ?? '';
-
+    
+    // 🔍 Vérifier si l’email ou le nom d'utilisateur existe déjà
+    $sql = "SELECT COUNT(*) FROM utilisateur WHERE (email = :email OR nom_utilisateur = :nom_utilisateur) AND id_utilisateur<>:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':email' => $email,
+        ':nom_utilisateur' => $nomUtilisateur,
+        ':id' => $idUtilisateur
+    ]);
+        if ($stmt->fetchColumn() > 0) {
+        die("L'email ou le nom d'utilisateur est déjà utilisé.");
+    }
     $sqlUpdateUtilisateur = "UPDATE utilisateur
                             SET nom = :nom,
                                 prenom = :prenom,
@@ -25,30 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 nom_utilisateur = :nom_utilisateur
                             WHERE id_utilisateur = :id_utilisateur";
 
-    $stmtUpdateUtilisateur = $pdo->prepare($sqlUpdateUtilisateur);
-    $stmtUpdateUtilisateur->execute([
-        ':nom' => $nom,
-        ':prenom' => $prenom,
-        ':email' => $email,
-        ':nom_utilisateur' => $nomUtilisateur,
-        ':id_utilisateur' => $idUtilisateur
-    ]);
+$stmtUpdateUtilisateur = $pdo->prepare($sqlUpdateUtilisateur);
+$stmtUpdateUtilisateur->execute([
+    ':nom' => $nom,
+    ':prenom' => $prenom,
+    ':email' => $email,
+    ':nom_utilisateur' => $nomUtilisateur,
+    ':id_utilisateur' => $idUtilisateur
+]);
 
-    // Message de succès
-    $_SESSION['profil_modifie'] = true;
+// Message de succès
+$_SESSION['profil_modifie'] = true;
 
-    // Redirection pour éviter le re-post du formulaire
-    header("Location: modifieProfil.php");
+// Redirection pour éviter le re-post du formulaire
+header("Location: modifieProfil.php");
     exit();
 }
 
-    // 🔍 Vérifier si l’email ou le nom d'utilisateur existe déjà
-    $sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email OR nom_utilisateur = :nom_utilisateur";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':email' => $email,
-        ':nom_utilisateur' => $nomUtilisateur
-    ]);
 
 $sql = "SELECT nom, prenom, email, nom_utilisateur, date_inscription
         FROM utilisateur
