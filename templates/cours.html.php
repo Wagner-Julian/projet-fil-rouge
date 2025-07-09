@@ -41,7 +41,7 @@
                     <form method="post" style="margin-top: 10px;">
                         <input type="hidden" name="id_cours" value="<?= $cours['id_cours'] ?>">
                         <label for="id_chien">Sélectionner un de vos chiens :</label>
-                        <select name="id_chien" required>
+                        <select name="id_chien" id="id_chien" required>
                             <?php foreach ($chiensUtilisateur as $chien): ?>
                                 <?php
                                 $dateNaissance = new DateTime($chien['date_naissance_chien']);
@@ -83,10 +83,6 @@
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
-        </select>
-
-        </form>
-
 
     </main>
 

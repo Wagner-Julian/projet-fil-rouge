@@ -31,10 +31,10 @@
     <label>Prénom</label>
     <input name="prenom" placeholder="Prénom" required="" type="text" value="<?= hsc($prenom) ?>" /><br /><br />
 
-    <label>Nom utilisateur</label>
-    <input name="nom_utilisateur" placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur) ?>" /><br /><br />
+    <label for="utilisateurInput">Nom utilisateur</label>
+    <input name="nom_utilisateur" id="utilisateurInput" placeholder="Nom d'utilisateur" required="" type="text" value="<?= hsc($nomUtilisateur) ?>" /><br /><br />
 
-    <label>Email</label>
+    <label for="emailInput">Email</label>
     <input name="email" id="emailInput" placeholder="Email" required="" type="email" value="<?= hsc($email) ?>" /><br /><br />
 
     
