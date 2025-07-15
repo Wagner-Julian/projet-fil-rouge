@@ -30,6 +30,19 @@
     <form method="POST" action="login.php">
       <input name="email" id="emailInput" placeholder="email" type="email" /><br /><br />
       <input name="mot_de_passe" placeholder="Mot de passe" required type="password" /><br /><br />
+          <!-- Honeypot : champ caché pour piéger les bots  -->
+    <div style="display:none;">
+        <label>Ne pas remplir ce champ</label>
+        <input type="text" name="robot_check" autocomplete="off">
+    </div>
+
+    <!-- Captcha Checkbox -->
+    <div checkboxCaptchat>
+    <label>
+        <input type="checkbox" name="captcha_check" required>
+        Je ne suis pas un robot
+    </label>
+      </div>
       <button type="submit">Se connecter</button>
     </form>
   </main>

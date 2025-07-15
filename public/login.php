@@ -7,6 +7,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $mdp = $_POST['mot_de_passe'] ?? '';
 
+    // Vérification du honeypot
+if (!empty($_POST['robot_check'])) {
+    die('Détection de bot (honeypot déclenché).');
+}
+
+// Vérification de la case à cocher
+if (!isset($_POST['captcha_check'])) {
+    die('Veuillez cocher la case "Je ne suis pas un robot".');
+}
+
     // Chercher l'utilisateur uniquement par email
     $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE email = ?");
     $stmt->execute([$email]);
