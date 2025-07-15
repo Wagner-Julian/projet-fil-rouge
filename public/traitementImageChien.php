@@ -68,6 +68,7 @@ if (!move_uploaded_file($photo['tmp_name'], $dest)) {
     exit;
 }
 
+// supprimer l'image 
 $_SESSION['message-chien'] = '✅ Photo du chien mise à jour !';
 header('Location: profilChien.php');
 

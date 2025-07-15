@@ -164,6 +164,7 @@ if (isset($_POST['supprimer_chien']) && $_POST['formSupprimer'] === '2') {
 
         $stmtDeleteChien = $pdo->prepare("DELETE FROM chien WHERE id_chien = :id_chien");
         $stmtDeleteChien->execute([':id_chien' => $idChienASupprimer]);
+        
 
         $_SESSION['supprimer_chien'] = true;
         var_dump($_SESSION['supprimer_chien']);

@@ -1,217 +1,246 @@
 <?php
+/*****************************************************************
+ * coach.php
+ * ---------
+ * Tableau de bord du coach :
+ *   ─ liste ses cours
+ *   ─ affiche les chiens inscrits
+ *   ─ formulaire d’ajout / modification d’un cours
+ *   ─ formulaire de suppression d’un cours
+ *
+ * Toute la logique « réservation » (inscrire un chien, décrémenter
+ * les places) est déportée dans reservation.php.
+ *****************************************************************/
+
 session_start();
 
-// Connexion et fonctions
-require_once __DIR__ . '/../include/connection-base-donnees.php';
-require_once __DIR__ . '/../include/fonction.php';
+/*---------------------------------------------------------------
+0. CHARGEMENTS COMMUNS
+----------------------------------------------------------------*/
+require_once __DIR__ . '/../include/connection-base-donnees.php';  // $pdo
+require_once __DIR__ . '/../include/fonction.php';                 // helpers (dates, heures, …)
 
-// ✅ Vérification utilisateur
+/*---------------------------------------------------------------
+1. SÉCURITÉ : l’utilisateur doit être connecté
+----------------------------------------------------------------*/
 if (!isset($_SESSION['id_utilisateur'])) {
-    die("Utilisateur non connecté.");
+    die('⛔ Utilisateur non connecté.');
 }
+
 $id_utilisateur = $_SESSION['id_utilisateur'];
 
-// ✅ Récupération des tranches d'âge pour le select
-$stmt = $pdo->query("SELECT id_tranche, nom FROM tranche_age ORDER BY age_min_mois ASC");
+/*---------------------------------------------------------------
+2. TRANCHES D’ÂGE (pour le <select>)
+----------------------------------------------------------------*/
+$stmt = $pdo->query("
+    SELECT id_tranche, nom
+    FROM tranche_age
+    ORDER BY age_min_mois ASC
+");
 $tranches_age = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// ✅ Si on est en mode "edit" → on récupère le cours à modifier
+/*---------------------------------------------------------------
+3. MODE ÉDITION : si ?edit=ID, on charge ce cours
+----------------------------------------------------------------*/
 $idCoursEdit = $_GET['edit'] ?? null;
-$coursEdit = null;
+$coursEdit   = null;
 
-if (!empty($idCoursEdit)) {
-    $stmtEdit = $pdo->prepare("
-        SELECT c.*, t.nom AS nom_tranche, ty.nom_type
-        FROM cours c
-        LEFT JOIN tranche_age t ON c.id_tranche = t.id_tranche
-        LEFT JOIN type ty ON c.id_type = ty.id_type
-        WHERE c.id_cours = :id_cours
-        AND c.id_utilisateur = :id_utilisateur
+if ($idCoursEdit) {
+    $stmt = $pdo->prepare("
+        SELECT c.*, t.nom       AS nom_tranche,
+            ty.nom_type
+        FROM   cours c
+        LEFT   JOIN tranche_age t ON t.id_tranche = c.id_tranche
+        LEFT   JOIN type        ty ON ty.id_type   = c.id_type
+        WHERE  c.id_cours       = :id_cours
+        AND  c.id_utilisateur = :id_utilisateur
     ");
-    $stmtEdit->execute([
-        ':id_cours' => $idCoursEdit,
+    $stmt->execute([
+        ':id_cours'       => $idCoursEdit,
         ':id_utilisateur' => $id_utilisateur
     ]);
-    $coursEdit = $stmtEdit->fetch(PDO::FETCH_ASSOC);
+    $coursEdit = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // ✅ On convertit la date en format Europe pour le formulaire
+    /* Petit confort : on repasse la date en JJ/MM/AAAA pour l’input <date> */
     if ($coursEdit) {
         $coursEdit['date_cours'] = dateFormatEurope($coursEdit['date_cours']);
     }
 }
 
-// ✅ Traitement du formulaire
-if (    $_SERVER["REQUEST_METHOD"] === "POST"
-    && isset($_POST['formCu'])      // ✅ protège l’accès
-    && $_POST['formCu'] === '1') 
-{
+/*---------------------------------------------------------------
+4. TRAITEMENT DU FORMULAIRE (INSERT / UPDATE d’un cours)
+----------------------------------------------------------------*/
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['formCu']) &&                       // petit « token » caché
+    $_POST['formCu'] === '1'
+) {
+    /* 4.1 – récupération des champs */
+    $idCoursPost = $_POST['id_cours'] ?? null;       // null → nouveau cours
+    $nomCours    = trim($_POST['name']  ?? '');
+    $typeCours   = trim($_POST['type']  ?? '');
+    $dateCours   = trim($_POST['date']  ?? '');
+    $dateCours   = dateFormatUniversel($dateCours);  // JJ/MM/AAAA → YYYY-MM-DD
+    $heureCours  = trim($_POST['time']  ?? '');
+    $dureeCours  = trim($_POST['duree_cours'] ?? '');
+    $places      = (int) ($_POST['places'] ?? 0);    // nb de places max
+    $idTranche   = $_POST['id_tranche'] ?? null;
 
-    // Données formulaire
-    $idCoursPost = $_POST['id_cours'] ?? null; // sert pour savoir si on UPDATE ou INSERT
-    $nomCours = $_POST['name'] ?? '';
-    $typeCours = $_POST['type'] ?? '';
-    $dateCours = $_POST['date'] ?? '';
-    $dateCours = dateFormatUniversel($dateCours); // conversion en Y-m-d
-    $heureCours = $_POST['time'] ?? '';
-    $dureeCours = $_POST['duree_cours'] ?? '';
-    $places = $_POST['places'] ?? 0;
-    $idTranche = $_POST['id_tranche'] ?? null;
-
-    // ✅ Gestion du type : vérifier s'il existe, sinon le créer
-    $stmt = $pdo->prepare("SELECT id_type FROM type WHERE nom_type = :nom_type");
-    $stmt->execute(['nom_type' => $typeCours]);
+    /* 4.2 – (éventuellement) création d’un nouveau type de cours           */
+    $stmt = $pdo->prepare("SELECT id_type FROM type WHERE nom_type = :nom");
+    $stmt->execute([':nom' => $typeCours]);
     $type = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($type) {
         $idType = $type['id_type'];
     } else {
-        $stmt = $pdo->prepare("INSERT INTO type (nom_type) VALUES (:nom_type)");
-        $stmt->execute(['nom_type' => $typeCours]);
+        $stmt = $pdo->prepare("INSERT INTO type (nom_type) VALUES (:nom)");
+        $stmt->execute([':nom' => $typeCours]);
         $idType = $pdo->lastInsertId();
     }
 
-    $idStatus = 1; // par défaut
-    $dateCreation = (new DateTime())->format('Y-m-d H:i:s'); // date du jour
+    $idStatus     = 1;                                 // 1 = « planifié »
+    $dateCreation = (new DateTime())->format('Y-m-d H:i:s');
 
-    // ✅ Si on MODIFIE un cours existant
-    if (!empty($idCoursPost)) {
-
-        $stmtUpdate = $pdo->prepare("
+    if ($idCoursPost) {
+        /* 4.3 – UPDATE *************************************************** */
+        $stmt = $pdo->prepare("
             UPDATE cours
-            SET nom_cours = :nom,
-                date_cours = :date,
-                heure_cours = :heure,
-                duree_cours = :duree_cours,
+            SET nom_cours       = :nom,
+                date_cours      = :date,
+                heure_cours     = :heure,
+                duree_cours     = :duree,
                 nb_places_cours = :places,
-                id_type = :id_type,
-                id_status = :id_status,
-                id_tranche = :id_tranche
-            WHERE id_cours = :id_cours
+                id_type         = :id_type,
+                id_status       = :id_status,
+                id_tranche      = :id_tranche
+            WHERE id_cours       = :id
             AND id_utilisateur = :id_utilisateur
         ");
-
-        $stmtUpdate->execute([
-            'nom' => $nomCours,
-            'date' => $dateCours,
-            'heure' => $heureCours,
-            'duree_cours' => $dureeCours,
-            'places' => $places,
-            'id_type' => $idType,
-            'id_status' => $idStatus,
-            'id_tranche' => $idTranche,
-            'id_cours' => $idCoursPost,
-            'id_utilisateur' => $id_utilisateur
+        $stmt->execute([
+            ':nom'            => $nomCours,
+            ':date'           => $dateCours,
+            ':heure'          => $heureCours,
+            ':duree'          => $dureeCours,
+            ':places'         => $places,
+            ':id_type'        => $idType,
+            ':id_status'      => $idStatus,
+            ':id_tranche'     => $idTranche,
+            ':id'             => $idCoursPost,
+            ':id_utilisateur' => $id_utilisateur
         ]);
-
-        $_SESSION['message'] = "✅ Le cours a été modifié avec succès !";
-
+        $_SESSION['message'] = '✅ Cours modifié.';
     } else {
-        // ✅ Sinon, c'est un NOUVEAU cours
-        $stmtInsert = $pdo->prepare("
+        /* 4.4 – INSERT *************************************************** */
+        $stmt = $pdo->prepare("
             INSERT INTO cours (
-                nom_cours, date_creation_cours, date_cours, heure_cours, duree_cours,
-                nb_places_cours, id_utilisateur, id_type, id_status, id_tranche
+                nom_cours, date_creation_cours, date_cours, heure_cours,
+                duree_cours, nb_places_cours, id_utilisateur,
+                id_type, id_status, id_tranche
             ) VALUES (
-                :nom, :date_creation_cours, :date, :heure, :duree_cours,
-                :places, :id_utilisateur, :id_type, :id_status, :id_tranche
+                :nom, :date_creation, :date, :heure,
+                :duree, :places, :id_utilisateur,
+                :id_type, :id_status, :id_tranche
             )
         ");
-
-        $stmtInsert->execute([
-            'nom' => $nomCours,
-            'date_creation_cours' => $dateCreation,
-            'date' => $dateCours,
-            'heure' => $heureCours,
-            'duree_cours' => $dureeCours,
-            'places' => $places,
-            'id_utilisateur' => $id_utilisateur,
-            'id_type' => $idType,
-            'id_status' => $idStatus,
-            'id_tranche' => $idTranche
+        $stmt->execute([
+            ':nom'            => $nomCours,
+            ':date_creation'  => $dateCreation,
+            ':date'           => $dateCours,
+            ':heure'          => $heureCours,
+            ':duree'          => $dureeCours,
+            ':places'         => $places,
+            ':id_utilisateur' => $id_utilisateur,
+            ':id_type'        => $idType,
+            ':id_status'      => $idStatus,
+            ':id_tranche'     => $idTranche
         ]);
-
-        $_SESSION['message'] = "✅ Le cours a été ajouté avec succès !";
+        $_SESSION['message'] = '✅ Cours ajouté.';
     }
 
-    // Redirige pour éviter un re-submit
-    header("Location: coach.php");
+    /* 4.5 – redirection pour éviter le double-submit */
+    header('Location: coach.php');
     exit;
 }
 
-
-// ✅ Étape 1 : on récupère les chiens inscrits et on les groupe par cours
+/*---------------------------------------------------------------
+5. RÉCUPÉRATION DES CHIENS INSCRITS (groupés par id_cours)
+----------------------------------------------------------------*/
 $stmt = $pdo->prepare("
     SELECT c.*, co.id_cours, r.etat_reservation
     FROM cours co
-    JOIN reservation r ON co.id_cours = r.id_cours
-    JOIN chien c       ON r.id_chien = c.id_chien
+    JOIN reservation r ON r.id_cours = co.id_cours
+    JOIN chien       c ON c.id_chien = r.id_chien
     WHERE co.id_utilisateur = :id_utilisateur
 ");
-$stmt->execute(['id_utilisateur' => $id_utilisateur]);
-$chiens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt->execute([':id_utilisateur' => $id_utilisateur]);
 
 $chiensParCours = [];
-foreach ($chiens as $chien) {
-    $idCours = $chien['id_cours'];
-    $chiensParCours[$idCours][] = $chien;
+foreach ($stmt as $row) {
+    $chiensParCours[$row['id_cours']][] = $row;
 }
+/* (❗) Aucune mise à jour du stock ici ! */
 
-    /* 4. Décrémenter le compteur */
-    $stmt = $pdo->prepare("
-        UPDATE cours
-        SET nb_places_cours = nb_places_cours - 1
-        WHERE id_cours = :id_cours
-    ");
-    $stmt->execute([':id_cours' => $idCours]);
-
-// ✅ Étape 2 : on récupère les cours
+/*---------------------------------------------------------------
+6. RÉCUPÉRATION DES COURS DU COACH
+----------------------------------------------------------------*/
 $stmt = $pdo->prepare("
     SELECT c.*, t.nom AS nom_tranche, ty.nom_type
     FROM cours c
-    LEFT JOIN tranche_age t ON c.id_tranche = t.id_tranche
-    LEFT JOIN type ty       ON c.id_type    = ty.id_type
+    LEFT JOIN tranche_age t ON t.id_tranche = c.id_tranche
+    LEFT JOIN type        ty ON ty.id_type   = c.id_type
     WHERE c.id_utilisateur = :id
     ORDER BY c.date_cours ASC
 ");
-$stmt->execute(['id' => $id_utilisateur]);
+$stmt->execute([':id' => $id_utilisateur]);
 $coursCoach = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// ✅ Étape 3 : on injecte les chiens dans chaque cours
+/* — formatage date ◦ heure + injection des chiens — */
 foreach ($coursCoach as &$cours) {
     $cours['date_cours']  = dateFormatEurope($cours['date_cours']);
     $cours['heure_cours'] = convertirHeure($cours['heure_cours']);
-    $coursId = $cours['id_cours'];
-    $cours['chiens'] = $chiensParCours[$coursId] ?? [];
+    $cours['chiens']      = $chiensParCours[$cours['id_cours']] ?? [];
 }
 unset($cours);
 
-
-
+/*---------------------------------------------------------------
+7. SUPPRESSION D’UN COURS
+----------------------------------------------------------------*/
 if (
-    $_SERVER["REQUEST_METHOD"] === "POST" &&
-    isset($_POST['supprimer_cours'], $_POST['formSupprimer']) &&
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['formSupprimer'], $_POST['supprimer_cours']) &&
     $_POST['formSupprimer'] === '2'
 ) {
-    $idcoursASupprimer = (int) $_POST['supprimer_cours'];
+    $idCoursSuppr = (int) $_POST['supprimer_cours'];
 
-    $stmt = $pdo->prepare("SELECT id_utilisateur FROM cours WHERE id_cours = :id_cours");
-    $stmt->execute(['id_cours' => $idcoursASupprimer]);
-    $cours = $stmt->fetch(PDO::FETCH_ASSOC);
+    /* 7.1 – vérif ownership */
+    $stmt = $pdo->prepare("
+        SELECT 1
+        FROM   cours
+        WHERE  id_cours = :id
+        AND  id_utilisateur = :id_utilisateur
+    ");
+    $stmt->execute([
+        ':id'             => $idCoursSuppr,
+        ':id_utilisateur' => $id_utilisateur
+    ]);
 
-    if (!$cours || $cours['id_utilisateur'] != $id_utilisateur) {
-        $_SESSION['erreur_suppression'] = "Action non autorisée.";
+    if ($stmt->fetchColumn()) {
+        /* 7.2 – delete */
+        $pdo->prepare("
+            DELETE FROM cours WHERE id_cours = :id
+        ")->execute([':id' => $idCoursSuppr]);
+
+        $_SESSION['message'] = '🗑️ Cours supprimé.';
     } else {
-        $stmtDeletecours = $pdo->prepare("DELETE FROM cours WHERE id_cours = :id_cours");
-        $stmtDeletecours->execute([':id_cours' => $idcoursASupprimer]);
-
-        $_SESSION['supprimer_cours'] = true;
+        $_SESSION['erreur']  = 'Action non autorisée.';
     }
 
-    header("Location: coach.php");
+    header('Location: coach.php');
     exit;
 }
 
-
-
-// On charge le template HTML
+/*---------------------------------------------------------------
+8. AFFICHAGE : on inclut le template HTML
+----------------------------------------------------------------*/
 require_once __DIR__ . '/../templates/coach.html.php';

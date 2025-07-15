@@ -84,11 +84,11 @@
                             ✏️ Modifier
                         </a>
                     </div>
-  <form method="POST" action="modifieProfilChien.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le chien <?= hsc($c['nom_chien']) ?> ?');">
-  <input type="hidden" name="supprimer_chien" value="<?= $c['id_chien'] ?>">
-  <input type="hidden" name="formSupprimer" value="2"/>
-  <button type="submit">❌ Supprimer</button>
-  </form>
+                    <form method="POST" action="modifieProfilChien.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le chien <?= hsc($c['nom_chien']) ?> ?');">
+                    <input type="hidden" name="supprimer_chien" value="<?= $c['id_chien'] ?>">
+                    <input type="hidden" name="formSupprimer" value="2"/>
+                    <button type="submit">❌ Supprimer</button>
+                    </form>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
