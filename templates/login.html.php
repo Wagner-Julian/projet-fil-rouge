@@ -40,7 +40,7 @@
     <div checkboxCaptchat>
     <label>
         <input type="checkbox" name="captcha_check" required>
-        Je ne suis pas un robot
+      Je ne suis pas un robot 🤖 
     </label>
       </div>
       <button type="submit">Se connecter</button>
