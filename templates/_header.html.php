@@ -46,7 +46,6 @@ if (isset($_SESSION['id_utilisateur'])) {
     </div>
 
     <div class= "nav-center-mobile">
-      <label for="mobile-center" class="menu-mobile-center"></label>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
         <a href="admin.php"><button>👑 Admin</button></a>
       <?php endif; ?>
