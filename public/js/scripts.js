@@ -111,3 +111,71 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
+// Récupère le champ input correspondant à la date du cours (id = dateCoursCoach)
+const dateInput = document.getElementById('dateCoursCoach');
+
+// Récupère l'élément <p> qui affichera les messages d'erreur (id = messageErreurDate)
+const messageErreur = document.getElementById('messageErreurDate');
+
+// Fonction qui vérifie si la date saisie n'est pas déjà dépassée
+function verifDateCoursNonDepasse() {
+
+    // Récupère la valeur saisie dans le champ date, en supprimant les espaces inutiles
+    const valeur = dateInput.value.trim();
+
+    // Expression régulière pour vérifier que la date est bien au format jj/mm/aaaa
+    // ^ début de chaîne
+    // (\d{2}) : capture 2 chiffres (jour)
+    // \/ : un slash
+    // (\d{2}) : capture 2 chiffres (mois)
+    // \/ : un slash
+    // (\d{4}) : capture 4 chiffres (année)
+    // $ fin de chaîne
+    const regexDate = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+
+    // Teste si la valeur correspond bien au format attendu
+    const match = valeur.match(regexDate);
+
+    // Si la date ne respecte pas le format jj/mm/aaaa
+    if (!match) {
+        // Affiche un message d'erreur à l'utilisateur
+        messageErreur.textContent = "Format de date invalide (jj/mm/aaaa).";
+        messageErreur.style.display = "block"; // Affiche le <p> d'erreur
+        return; // Sort de la fonction sans continuer
+    }
+
+    // Si le format est correct, on récupère les parties de la date
+    const jour = parseInt(match[1], 10);   // Le jour (partie 1 du match)
+    const mois = parseInt(match[2], 10) - 1; // Le mois (partie 2), -1 car en JS les mois vont de 0 à 11
+    const annee = parseInt(match[3], 10);   // L'année (partie 3)
+
+    // Crée un objet Date en JS avec la date choisie par l'utilisateur
+    const dateChoisie = new Date(annee, mois, jour);
+
+    // Crée un objet Date pour aujourd'hui
+    const aujourdHui = new Date();
+
+    // Met les heures/minutes/secondes à 0 pour comparer uniquement les dates (sans tenir compte de l'heure)
+    aujourdHui.setHours(0, 0, 0, 0);
+    dateChoisie.setHours(0, 0, 0, 0);
+
+    // Vérifie si la date choisie est avant aujourd'hui (c'est-à-dire dépassée)
+    if (dateChoisie < aujourdHui) {
+        // Si la date est dépassée, affiche un message d'erreur
+        messageErreur.textContent = "La date choisie est déjà passée.";
+        messageErreur.style.display = "block";
+        // Vide le champ date pour forcer l'utilisateur à en saisir une autre
+        dateInput.value = "";
+    } else {
+        // Si la date est correcte, cache le message d'erreur
+        messageErreur.style.display = "none";
+    }
+}
+
+// Ajoute un événement 'blur' sur le champ date
+// Le 'blur' se déclenche quand l'utilisateur sort du champ (par exemple après avoir tapé la date)
+dateInput.addEventListener('blur', verifDateCoursNonDepasse);
+
+
+

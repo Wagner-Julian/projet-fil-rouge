@@ -65,7 +65,8 @@
       </select><br><br>
 
       <label>Date du cours :</label><br>
-      <input name="date" placeholder="Date (jj/mm/aaaa)" required type="text"
+      <p id="messageErreurDate" style="color:red; display:none;">La date choisie est déjà passée.</p>
+      <input name="date" id="dateCoursCoach" placeholder="Date (jj/mm/aaaa)" required type="text"
         value="<?= !empty($coursEdit) ? hsc($coursEdit['date_cours']) : '' ?>" /><br><br>
 
       <label>Heure du cours :</label><br>
