@@ -547,13 +547,17 @@ form button[type="submit"] {
   }
 
   nav{
+    width: 100%;
+    min-width: 100%;
     flex-direction: row;
+    flex-wrap: nowrap;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-evenly;
+    align-items: flex-start;
     margin-top: 15px;
 
   }
+
    /* Cacher les menus desktop */
   .nav-left,
   .nav-right,
@@ -580,7 +584,8 @@ form button[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 126px;
+    max-width: 126px;   /* ✅ Limite la taille sans forcer le conteneur */
+    margin: auto;
     margin-top: 2px;
 }
 
@@ -595,45 +600,47 @@ form button[type="submit"] {
     cursor: pointer;
     margin-bottom: 5px;
   }
+  .col-email{
+    display: none;
+  }
 
-  /* Menus déroulants */
   .menu-deroulant-left,
   .menu-deroulant-right {
     display: none;
     position: absolute;
-    border: 1px solid #ccc;
-    padding: 0.2rem;
-    z-index: 100;
-    flex-direction: column;
-    width: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .menu-deroulant-left {
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .menu-deroulant-right {
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  /* Affichage si checkbox cochée */
-  #mobile-left:checked ~ .menu-deroulant-left {
-    display: flex;
+    left: 0;
+    background: #444;
     flex-direction: column;
-    justify-content: space-evenly;
+    width: 150px;
+    z-index: 999;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   }
 
-  #mobile-right:checked ~ .menu-deroulant-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+  .menu-deroulant-left a,
+  .menu-deroulant-right a {
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
   }
+
+  .show-mobile-menu {
+    display: flex !important;
+  }
+
+  .nav-left-mobile, .nav-right-mobile {
+    position: relative;
+  }
+
+.position-boutton {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
 }
+}
+  
 
 
 
@@ -755,11 +762,4 @@ form button[type="submit"] {
     transform: translateX(-50%) scale(1.1);
   }
   
-  .position-boutton{
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: flex-end;
-  }
   

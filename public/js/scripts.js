@@ -173,9 +173,8 @@ function verifDateCoursNonDepasse() {
     }
 }
 
-// Ajoute un événement 'blur' sur le champ date
-// Le 'blur' se déclenche quand l'utilisateur sort du champ (par exemple après avoir tapé la date)
-dateInput.addEventListener('blur', verifDateCoursNonDepasse);
-
-
+// Ajoute l'événement seulement si les éléments existent
+if (dateInput && messageErreur) {
+    dateInput.addEventListener('blur', verifDateCoursNonDepasse);
+}
 

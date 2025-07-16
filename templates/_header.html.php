@@ -30,7 +30,7 @@ if (isset($_SESSION['id_utilisateur'])) {
 
     <div class ="nav-left-mobile">
       <input type="checkbox" id="mobile-left" hidden>
-      <label for="mobile-left" class="menu-mobile-left"> Tableau de Bord ▼</label>
+      <label for="mobile-left" class="menu-mobile-left"> Tableau de&nbsp;Bord ▼</label>
       <div class="menu-deroulant-left">
       <a href="tableauBord.php"><button>Tableau de Bord</button></a>
       <a href="cours.php"><button>Cours</button></a>
@@ -93,3 +93,22 @@ if (isset($_SESSION['id_utilisateur'])) {
         </div>
   </nav>
 </header>
+<script>
+// Pour le menu mobile gauche
+const mobileLeftBtn = document.querySelector('.menu-mobile-left');
+const menuLeft = document.querySelector('.menu-deroulant-left');
+
+mobileLeftBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    menuLeft.classList.toggle('show-mobile-menu');
+});
+
+// Pour le menu mobile droit
+const mobileRightBtn = document.querySelector('.menu-mobile-right');
+const menuRight = document.querySelector('.menu-deroulant-right');
+
+mobileRightBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    menuRight.classList.toggle('show-mobile-menu');
+});
+</script>

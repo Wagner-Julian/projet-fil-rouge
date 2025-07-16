@@ -39,7 +39,7 @@
   <thead>
     <tr>
       <th>Nom d'utilisateur</th>
-      <th>Email</th>
+      <th class="col-email"> Email</th>
       <th>Rôle actuel</th>
       <th>Changer rôle</th>
     </tr>
@@ -48,7 +48,7 @@
     <?php foreach ($membres as $id => $membre): ?>
     <tr>
       <td><?= hsc($membre['nom_utilisateur']) ?></td>
-      <td class="elipse"><?= hsc($membre['email']) ?></td>
+      <td class="elipse col-email"><?= hsc($membre['email']) ?></td>
       <td><?= hsc($membre['nom_role']) ?></td>
       <td class="position-boutton">
         <form method="POST" action="admin.php">
