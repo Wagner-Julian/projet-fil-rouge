@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Club Canin 🐶</title>
   <link href="css/style.css" rel="stylesheet" />
+  <link href="css/admin.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -38,17 +41,16 @@
 <table class="table-utilisateurs">
   <thead>
     <tr>
-      <th>Nom d'utilisateur</th>
-      <th class="col-email"> Email</th>
+      <th>Infos utilisateur <br> (nom_utilisateur, email) </th>
       <th>Rôle actuel</th>
+
       <th>Changer rôle</th>
     </tr>
   </thead>
   <tbody>
     <?php foreach ($membres as $id => $membre): ?>
     <tr>
-      <td><?= hsc($membre['nom_utilisateur']) ?></td>
-      <td class="elipse col-email"><?= hsc($membre['email']) ?></td>
+      <td><?= nl2br(hsc($membre['infos'])) ?></td>
       <td><?= hsc($membre['nom_role']) ?></td>
       <td class="position-boutton">
         <form method="POST" action="admin.php">
@@ -58,13 +60,15 @@
             <option value="Coach" <?= $membre['nom_role'] === 'Coach' ? 'selected' : '' ?>>Coach</option>
             <option value="Admin" <?= $membre['nom_role'] === 'Admin' ? 'selected' : '' ?>>Admin</option>
           </select>
-          <button type="submit">✅ Appliquer</button>
+          <button type="submit" class="boutton-appliquer">✅ Appliquer</button>
+          <button type="submit" class="boutton-appliquer-mobile" > ✅ OK </button>
         </form>
         
         <!-- Formulaire pour supprimer (séparé) avec confirmation JS -->
   <form method="POST" action="admin.php" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
   <input type="hidden" name="supprimer_utilisateur" value="<?= $id ?>">
-  <button type="submit">❌Supprimer</button>
+  <button type="submit" class="boutton-supprimer">❌Supprimer</button>
+  <button type="submit" class="boutton-supprimer-mobile"> ❌ <i class="fa-solid fa-trash-can"></i> </button>
   </form>
         
       </td>

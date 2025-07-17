@@ -1,0 +1,24 @@
+.boutton-appliquer-mobile{
+    display: none;
+}
+
+.boutton-supprimer-mobile{
+    display: none;
+    background-color: red;
+}
+
+@media(max-width: 600px) {
+    .boutton-appliquer-mobile{
+        display: block;
+    }
+    .boutton-supprimer-mobile{
+        display: block;
+    }
+    .boutton-appliquer{
+        display: none;
+    }
+    .boutton-supprimer{
+        display:none;
+    }
+
+}

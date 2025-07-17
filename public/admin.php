@@ -59,7 +59,7 @@ if (isset($_POST['supprimer_utilisateur'])) {
 
 
 // Toujours récupérer les membres pour affichage
-$sql = "SELECT u.id_utilisateur, u.nom_utilisateur, u.email, r.nom_role
+$sql = "SELECT u.id_utilisateur, CONCAT(u.nom_utilisateur,CHAR(10), u.email) AS infos , r.nom_role
         FROM utilisateur u
         JOIN role r ON u.id_role = r.id_role
         ORDER BY u.nom_utilisateur";
@@ -73,8 +73,7 @@ $membres = [];
 foreach ($informationsUtilisateur as $ligne) {
     $id = $ligne['id_utilisateur'];
     $membres[$id] = [
-        'nom_utilisateur' => $ligne['nom_utilisateur'],
-        'email' => $ligne['email'],
+        'infos' => $ligne['infos'],
         'nom_role' => $ligne['nom_role'],
     ];
 }
