@@ -21,7 +21,7 @@ if (isset($_SESSION['id_utilisateur'])) {
   <nav>
     <div class="nav-left">
       <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 1 || $_SESSION['role'] == 2)): ?>
-        <a href="coach.php"><button>Coach</button></a>
+        <a href="coach.php"><button>🐕‍🦺 Coach</button></a>
       <?php endif ?>
       <a href="tableauBord.php"><button>Tableau de Bord</button></a>
       <a href="cours.php"><button>Cours</button></a>
@@ -50,7 +50,7 @@ if (isset($_SESSION['id_utilisateur'])) {
         <a href="admin.php"><button>👑 Admin</button></a>
       <?php endif; ?>
             <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 1 || $_SESSION['role'] == 2)): ?>
-        <a href="coach.php"><button>Coach</button></a>
+        <a href="coach.php"><button>🐕‍🦺 Coach</button></a>
       <?php endif ?>
     </div>
 
