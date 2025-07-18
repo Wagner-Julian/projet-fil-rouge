@@ -18,6 +18,14 @@ if (isset($_SESSION['id_utilisateur'])) {
     <h1>Club Canin</h1>
   </div>
 
+  <div class= "nav-center-mobile">
+          <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+      <a href="admin.php"><button>👑 Admin</button></a>
+    <?php endif; ?>
+          <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 1 || $_SESSION['role'] == 2)): ?>
+      <a href="coach.php"><button>🐕‍🦺 Coach</button></a>
+    <?php endif ?>
+  </div>
   <nav>
     <div class="nav-left">
       <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 1 || $_SESSION['role'] == 2)): ?>
@@ -45,14 +53,6 @@ if (isset($_SESSION['id_utilisateur'])) {
       <a href="index.php#top"><button>🏠 Accueil</button></a>
     </div>
 
-    <div class= "nav-center-mobile">
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-        <a href="admin.php"><button>👑 Admin</button></a>
-      <?php endif; ?>
-            <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 1 || $_SESSION['role'] == 2)): ?>
-        <a href="coach.php"><button>🐕‍🦺 Coach</button></a>
-      <?php endif ?>
-    </div>
 
     <div class="nav-right">
       <?php if (isset($_SESSION['id_utilisateur'])): ?>

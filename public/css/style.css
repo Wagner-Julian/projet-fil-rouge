@@ -5,6 +5,7 @@ body {
     color: #333;
     margin: 0;
     padding-bottom: 70px; /* Espace réservé au footer */
+    position: relative;
 }
 
 /* Header avec titre et navigation */
@@ -400,6 +401,7 @@ footer {
     form {
         padding: 15px;
     }
+    
 }
 .videoChien {
     display: flex;
@@ -567,7 +569,6 @@ form button[type="submit"] {
 
   /* Afficher les menus mobiles */
   .nav-left-mobile,
-  .nav-center-mobile,
   .nav-right-mobile {
     display: flex;
     flex-direction: column;
@@ -575,6 +576,33 @@ form button[type="submit"] {
     position: relative;
     margin-bottom: 10px;
   }
+
+
+.nav-center-mobile {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    position: relative;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+  
+
+  .nav-center-mobile button{
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width: 126px;   /* ✅ Limite la taille sans forcer le conteneur */
+    margin: auto;
+    margin-top: 2px;
+}
+  
   
   nav button {
     background-color: #6c757d;
@@ -625,7 +653,7 @@ form button[type="submit"] {
   }
 
   .show-mobile-menu {
-    display: flex !important;
+    display: flex;
   }
 
   .nav-left-mobile, .nav-right-mobile {
@@ -639,6 +667,7 @@ form button[type="submit"] {
     flex-wrap: wrap;
     align-items: flex-end;
 }
+
 }
   
 
